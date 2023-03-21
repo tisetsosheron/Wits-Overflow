@@ -4,7 +4,50 @@ class Dashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(backgroundColor: Color.fromARGB(255, 68, 66, 66)),
       backgroundColor: Colors.white,
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            const DrawerHeader(
+              child: Center(
+                child: Text(
+                  "WitsOverflow",
+                  style: TextStyle(
+                      color: Colors.black,
+                      //fontWeight: FontWeight.bold,
+                      fontSize: 30),
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.person),
+              title: const Text("Profile"),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: Icon(Icons.dashboard),
+              title: const Text("Dashboard"),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: Icon(Icons.notifications),
+              title: const Text("Nofications"),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: Icon(Icons.settings),
+              title: const Text("Settings"),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: Icon(Icons.logout),
+              title: const Text("Logout"),
+              onTap: () {},
+            ),
+          ],
+        ),
+      ),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -14,20 +57,20 @@ class Dashboard extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Icon(Icons.menu, color: Colors.black, size: 50.0),
-                  Image.asset("assets/conversation.png", width: 50.0)
+                  const Padding(
+                    padding: EdgeInsets.all(18.0),
+                    child: Text(
+                      "Dashboard",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 28.0,
+                          fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                  //const Icon(Icons.menu, color: Colors.black, size: 50.0),
+                  Image.asset("images/conversation.png", width: 50.0)
                 ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(18.0),
-              child: Text(
-                "Welcome to your Dashboard",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 28.0,
-                    fontWeight: FontWeight.bold),
-                textAlign: TextAlign.start,
               ),
             ),
             Padding(
@@ -50,14 +93,14 @@ class Dashboard extends StatelessWidget {
                               padding: const EdgeInsets.all(8.0),
                               child: Column(
                                 children: [
-                                  Image.asset("assets/list.png", width: 64.0),
-                                  SizedBox(height: 10.0),
-                                  Text("Questions and answers",
+                                  Image.asset("images/list.png", width: 64.0),
+                                  const SizedBox(height: 10.0),
+                                  const Text("Questions and answers",
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 20.0)),
-                                  SizedBox(height: 5.0),
+                                  const SizedBox(height: 5.0),
                                   // Text( "2 questions", style :TextStyle(
                                   //     color: Colors.white,
                                   //     fontWeight: FontWeight.w100
@@ -78,14 +121,14 @@ class Dashboard extends StatelessWidget {
                               padding: const EdgeInsets.all(8.0),
                               child: Column(
                                 children: [
-                                  Image.asset("assets/medal.png", width: 64.0),
-                                  SizedBox(height: 10.0),
-                                  Text("View Achievements",
+                                  Image.asset("images/medal.png", width: 64.0),
+                                  const SizedBox(height: 10.0),
+                                  const Text("View Achievements",
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 20.0)),
-                                  SizedBox(height: 5.0),
+                                  const SizedBox(height: 5.0),
                                   // Text( "2 questions", style :TextStyle(
                                   //    color: Colors.white,
                                   //    fontWeight: FontWeight.w100
@@ -106,15 +149,15 @@ class Dashboard extends StatelessWidget {
                               padding: const EdgeInsets.all(8.0),
                               child: Column(
                                 children: [
-                                  Image.asset("assets/interpretation.png",
+                                  Image.asset("images/interpretation.png",
                                       width: 64.0),
-                                  SizedBox(height: 10.0),
-                                  Text("View Past Activities",
+                                  const SizedBox(height: 10.0),
+                                  const Text("View Past Activities",
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 20.0)),
-                                  SizedBox(height: 5.0),
+                                  const SizedBox(height: 5.0),
                                   // Text( "2 questions", style :TextStyle(
                                   //     color: Colors.white,
                                   //     fontWeight: FontWeight.w100
