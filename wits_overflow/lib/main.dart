@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'homepage.dart';
+import 'package:wits_overflow/signin.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,7 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Dashboard(),
+      home: LoginPage(),
     );
   }
 }
