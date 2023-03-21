@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wits_overflow/signin.dart';
 
 class Dashboard extends StatelessWidget {
   @override
@@ -43,7 +44,11 @@ class Dashboard extends StatelessWidget {
             ListTile(
               leading: Icon(Icons.logout),
               title: const Text("Logout"),
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => LoginPage(),
+                ));
+              },
             ),
           ],
         ),
