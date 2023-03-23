@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "259209096667",
+    "project_id": "fir-login-e8376",
+    "storage_bucket": "fir-login-e8376.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:259209096667:android:f765544fd72981a94a4bfe",
+        "android_client_info": {
+          "package_name": "com.example.wits_overflow"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "259209096667-8b0nouspleuuqj33e4jq8l28nkd3sb1e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_WpxhL7-ELc8sELvPCWNv3PHTSKgSiLU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "259209096667-8b0nouspleuuqj33e4jq8l28nkd3sb1e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
