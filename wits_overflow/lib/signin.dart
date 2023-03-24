@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wits_overflow/homepage.dart';
 
@@ -9,6 +10,65 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  Future signIn() async {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        });
+
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim());
+      Navigator.pop(context);
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => Dashboard(),
+      ));
+    } on FirebaseAuthException catch (e) {
+      Navigator.pop(context);
+      if (e.code == 'user-not-found') {
+        WrongEmail();
+      } else if (e.code == 'wrong-password') {
+        WrongPassword();
+      }
+    }
+  }
+
+  void WrongEmail() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const AlertDialog(
+          title: Text('Incorrect Email'),
+        );
+      },
+    );
+  }
+
+  void WrongPassword() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const AlertDialog(
+          title: Text('Incorrect Password'),
+        );
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,6 +93,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 20.0),
                           child: TextField(
+                            controller: _emailController,
                             decoration: InputDecoration(
                                 border: InputBorder.none, hintText: 'Email'),
                           ),
@@ -58,6 +119,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 20.0),
                           child: TextField(
+                            controller: _passwordController,
                             obscureText: true,
                             decoration: InputDecoration(
                                 border: InputBorder.none, hintText: 'Password'),
@@ -135,12 +197,6 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
         ));
-  }
-
-  void signIn() {
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => Dashboard(),
-    ));
   }
 
   // void resetpassword() {

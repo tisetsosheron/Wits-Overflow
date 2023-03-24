@@ -1,7 +1,15 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wits_overflow/signin.dart';
 
-class Dashboard extends StatelessWidget {
+class Dashboard extends StatefulWidget {
+  @override
+  State<Dashboard> createState() => _DashboardState();
+}
+
+class _DashboardState extends State<Dashboard> {
+  final user = FirebaseAuth.instance.currentUser!;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,6 +32,10 @@ class Dashboard extends StatelessWidget {
             ListTile(
               leading: Icon(Icons.person),
               title: const Text("Profile"),
+              subtitle: Text(
+                user.email!,
+                style: const TextStyle(color: Colors.grey),
+              ),
               onTap: () {},
             ),
             ListTile(
