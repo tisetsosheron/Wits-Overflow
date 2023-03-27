@@ -1,74 +1,17 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wits_overflow/homepage.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+enum rolesEnum { Moderator, Participant }
+
+class Register extends StatefulWidget {
+  const Register({Key? key}) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<Register> createState() => _RegisterState();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-
-  Future signIn() async {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        });
-
-    try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: _emailController.text.trim(),
-          password: _passwordController.text.trim());
-      Navigator.pop(context);
-      Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => Dashboard(),
-      ));
-    } on FirebaseAuthException catch (e) {
-      Navigator.pop(context);
-      if (e.code == 'user-not-found') {
-        WrongEmail();
-      } else if (e.code == 'wrong-password') {
-        WrongPassword();
-      }
-    }
-  }
-
-  void WrongEmail() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return const AlertDialog(
-          title: Text('Incorrect Email'),
-        );
-      },
-    );
-  }
-
-  void WrongPassword() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return const AlertDialog(
-          title: Text('Incorrect Password'),
-        );
-      },
-    );
-  }
-
-  @override
-  void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-    super.dispose();
-  }
-
+class _RegisterState extends State<Register> {
+  rolesEnum? _rolesEnum;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,6 +26,8 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(
                     height: 15,
                   ),
+
+                  //email textfield
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25),
                     child: Container(
@@ -90,25 +35,24 @@ class _LoginPageState extends State<LoginPage> {
                             color: Colors.grey[200],
                             border: Border.all(color: Colors.white),
                             borderRadius: BorderRadius.circular(12)),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 20.0),
+                        child: const Padding(
+                          padding: EdgeInsets.only(left: 20.0),
                           child: TextField(
-                            controller: _emailController,
-                            decoration: const InputDecoration(
-                                border: InputBorder.none, hintText: 'Email'),
+                            decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'email address'),
                           ),
                         )),
                   ),
                   const SizedBox(
                     height: 15,
                   ),
-                  //email textfield
 
-                  //password textfield
                   const SizedBox(
                     height: 15,
                   ),
-                  //email textfield
+
+                  //password textfield
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25),
                     child: Container(
@@ -116,24 +60,90 @@ class _LoginPageState extends State<LoginPage> {
                             color: Colors.grey[200],
                             border: Border.all(color: Colors.white),
                             borderRadius: BorderRadius.circular(12)),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 20.0),
+                        child: const Padding(
+                          padding: EdgeInsets.only(left: 20.0),
                           child: TextField(
-                            controller: _passwordController,
-                            obscureText: true,
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
                                 border: InputBorder.none, hintText: 'Password'),
                           ),
                         )),
                   ),
+                  //email textfield
+
+                  //confirm password textfield
                   const SizedBox(
                     height: 15,
                   ),
+                  //email textfield
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25),
+                    child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.grey[200],
+                            border: Border.all(color: Colors.white),
+                            borderRadius: BorderRadius.circular(12)),
+                        child: const Padding(
+                          padding: EdgeInsets.only(left: 20.0),
+                          child: TextField(
+                            obscureText: true,
+                            decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Confirm Password'),
+                          ),
+                        )),
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  SizedBox(
+                    width: 4,
+                  ),
+
+                  //radio button
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: RadioListTile<rolesEnum>(
+                              contentPadding: const EdgeInsets.all(0.0),
+                              value: rolesEnum.Moderator,
+                              groupValue: _rolesEnum,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5)),
+                              title: Text(
+                                rolesEnum.Moderator.name,
+                              ),
+                              onChanged: (val) {
+                                setState(() {
+                                  _rolesEnum = val;
+                                });
+                              }),
+                        ),
+                        const SizedBox(width: 5),
+                        Expanded(
+                          child: RadioListTile<rolesEnum>(
+                              contentPadding: const EdgeInsets.all(0.0),
+                              value: rolesEnum.Participant,
+                              groupValue: _rolesEnum,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5)),
+                              title: Text(rolesEnum.Participant.name),
+                              onChanged: (val) {
+                                setState(() {
+                                  _rolesEnum = val;
+                                });
+                              }),
+                        ),
+                      ],
+                    ),
+                  ),
+
                   //sign in button
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25.0),
                     child: GestureDetector(
-                      onTap: signIn,
+                      onTap: Register,
                       child: Container(
                         padding: EdgeInsets.all(20),
                         decoration: BoxDecoration(
@@ -141,7 +151,7 @@ class _LoginPageState extends State<LoginPage> {
                             borderRadius: BorderRadius.circular(12)),
                         child: const Center(
                           child: Text(
-                            'Sign In',
+                            'Sign up',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
@@ -150,21 +160,6 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      GestureDetector(
-                        child: const Text(
-                          'Forgot password?',
-                          style: TextStyle(color: Colors.blue, fontSize: 17),
-                        ),
-                        // onTap: resetpassword,
-                      )
-                    ],
                   ),
                   const SizedBox(
                     height: 40,
@@ -194,16 +189,16 @@ class _LoginPageState extends State<LoginPage> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 50),
+                  const SizedBox(height: 30),
 
                   SingleChildScrollView(
                       child: Column(children: [
                     Image.asset(
                       "images/google.jpg",
-                      width: 40,
+                      width: 45,
                     ),
                     const SizedBox(
-                      height: 40,
+                      height: 25,
                     ),
                   ])),
 
@@ -212,7 +207,7 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text(
-                        'Not a member?',
+                        'Already have an account?',
                         style:
                             TextStyle(color: Color.fromARGB(255, 97, 97, 97)),
                       ),
@@ -220,7 +215,7 @@ class _LoginPageState extends State<LoginPage> {
                       GestureDetector(
                         //onTap: widget.onTap,
                         child: const Text(
-                          'Register now',
+                          'Login here',
                           style: TextStyle(
                             color: Colors.blue,
                             fontWeight: FontWeight.bold,
@@ -238,16 +233,16 @@ class _LoginPageState extends State<LoginPage> {
         ));
   }
 
+  void Register() {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => Dashboard(),
+    ));
+  }
+
   // void resetpassword() {
   //   Navigator.of(context).push(MaterialPageRoute(
   //     builder: (context) => //reset_page,
   //   ));
 
-  // }
-
-  // void registerpage() {
-  //   Navigator.of(context).push(MaterialPageRoute(
-  //     builder: (context) => register_page,
-  //   ));
   // }
 }
