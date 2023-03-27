@@ -79,8 +79,8 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image(image: AssetImage('images/WITS.png')),
-                  SizedBox(
+                  const Image(image: AssetImage('images/WITS.png')),
+                  const SizedBox(
                     height: 15,
                   ),
                   Padding(
@@ -94,18 +94,18 @@ class _LoginPageState extends State<LoginPage> {
                           padding: const EdgeInsets.only(left: 20.0),
                           child: TextField(
                             controller: _emailController,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                                 border: InputBorder.none, hintText: 'Email'),
                           ),
                         )),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   //email textfield
 
                   //password textfield
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   //email textfield
@@ -121,12 +121,12 @@ class _LoginPageState extends State<LoginPage> {
                           child: TextField(
                             controller: _passwordController,
                             obscureText: true,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                                 border: InputBorder.none, hintText: 'Password'),
                           ),
                         )),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   //sign in button
@@ -139,7 +139,7 @@ class _LoginPageState extends State<LoginPage> {
                         decoration: BoxDecoration(
                             color: Colors.blue,
                             borderRadius: BorderRadius.circular(12)),
-                        child: Center(
+                        child: const Center(
                           child: Text(
                             'Sign In',
                             style: TextStyle(
@@ -151,44 +151,83 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       GestureDetector(
-                        child: Text(
-                          'Forgotten password?',
+                        child: const Text(
+                          'Forgot password?',
                           style: TextStyle(color: Colors.blue, fontSize: 17),
                         ),
                         // onTap: resetpassword,
                       )
                     ],
                   ),
-                  SizedBox(
-                    height: 75,
+                  const SizedBox(
+                    height: 40,
                   ),
+
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                    child: Container(
-                      padding: EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                          color: Colors.green,
-                          borderRadius: BorderRadius.circular(12)),
-                      child: Center(
-                        child: GestureDetector(
+                    padding: const EdgeInsets.symmetric(horizontal: 25),
+                    child: Row(
+                      children: [
+                        Expanded(
+                            child: Divider(
+                          thickness: 0.5,
+                          color: Colors.grey[400],
+                        )),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 25),
                           child: Text(
-                            'Sign Up',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18),
+                            'Or continue with',
+                            style: TextStyle(color: Colors.grey.shade700),
                           ),
-                          // onTap: registerpage,
+                        ),
+                        Expanded(
+                            child: Divider(
+                          thickness: 0.5,
+                          color: Colors.grey[400],
+                        )),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 50),
+
+                  SingleChildScrollView(
+                      child: Column(children: [
+                    Image.asset(
+                      "images/google.jpg",
+                      width: 40,
+                    ),
+                    const SizedBox(
+                      height: 40,
+                    ),
+                  ])),
+
+                  //not a member? register now
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'Not a member?',
+                        style:
+                            TextStyle(color: Color.fromARGB(255, 97, 97, 97)),
+                      ),
+                      const SizedBox(width: 4),
+                      GestureDetector(
+                        //onTap: widget.onTap,
+                        child: const Text(
+                          'Register now',
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                    ),
+                    ],
                   )
 
                   //not a member? register now
