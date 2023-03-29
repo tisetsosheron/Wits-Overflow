@@ -2,40 +2,24 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wits_overflow/signin.dart';
 
-class Dashboard extends StatefulWidget {
-  @override
-  State<Dashboard> createState() => _DashboardState();
-}
-
-class _DashboardState extends State<Dashboard> {
-  final user = FirebaseAuth.instance.currentUser!;
-
+class Dashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: Color.fromARGB(255, 68, 66, 66)),
+      appBar: AppBar(backgroundColor: Colors.blue),
       backgroundColor: Colors.white,
       drawer: Drawer(
         child: ListView(
           children: [
             const DrawerHeader(
               child: Center(
-                child: Text(
-                  "WitsOverflow",
-                  style: TextStyle(
-                      color: Colors.black,
-                      //fontWeight: FontWeight.bold,
-                      fontSize: 30),
+                child: Image(image: AssetImage('images/WITS.png'),
                 ),
               ),
             ),
             ListTile(
               leading: Icon(Icons.person),
               title: const Text("Profile"),
-              subtitle: Text(
-                user.email!,
-                style: const TextStyle(color: Colors.grey),
-              ),
               onTap: () {},
             ),
             ListTile(
@@ -80,8 +64,8 @@ class _DashboardState extends State<Dashboard> {
                       "Dashboard",
                       style: TextStyle(
                           color: Colors.black,
-                          fontSize: 28.0,
-                          fontWeight: FontWeight.bold),
+                          fontSize: 26.0,
+                          fontWeight: FontWeight.w500),
                       textAlign: TextAlign.start,
                     ),
                   ),
@@ -101,7 +85,7 @@ class _DashboardState extends State<Dashboard> {
                         width: 160.0,
                         height: 160.0,
                         child: Card(
-                            color: Color.fromARGB(155, 21, 21, 21),
+                            color: Colors.blue,
                             elevation: 2.0,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8.0)),
@@ -115,7 +99,7 @@ class _DashboardState extends State<Dashboard> {
                                   const Text("Questions and answers",
                                       style: TextStyle(
                                           color: Colors.white,
-                                          fontWeight: FontWeight.bold,
+                                          fontWeight: FontWeight.normal,
                                           fontSize: 20.0)),
                                   const SizedBox(height: 5.0),
                                   // Text( "2 questions", style :TextStyle(
@@ -129,7 +113,7 @@ class _DashboardState extends State<Dashboard> {
                         width: 160.0,
                         height: 160.0,
                         child: Card(
-                            color: Color.fromARGB(155, 21, 21, 21),
+                            color: Colors.blue,
                             elevation: 2.0,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8.0)),
@@ -143,7 +127,7 @@ class _DashboardState extends State<Dashboard> {
                                   const Text("View Achievements",
                                       style: TextStyle(
                                           color: Colors.white,
-                                          fontWeight: FontWeight.bold,
+                                          fontWeight: FontWeight.normal,
                                           fontSize: 20.0)),
                                   const SizedBox(height: 5.0),
                                   // Text( "2 questions", style :TextStyle(
@@ -157,7 +141,7 @@ class _DashboardState extends State<Dashboard> {
                         width: 160.0,
                         height: 160.0,
                         child: Card(
-                            color: Color.fromARGB(155, 21, 21, 21),
+                            color: Colors.blue,
                             elevation: 2.0,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8.0)),
@@ -172,7 +156,7 @@ class _DashboardState extends State<Dashboard> {
                                   const Text("View Past Activities",
                                       style: TextStyle(
                                           color: Colors.white,
-                                          fontWeight: FontWeight.bold,
+                                          fontWeight: FontWeight.normal,
                                           fontSize: 20.0)),
                                   const SizedBox(height: 5.0),
                                   // Text( "2 questions", style :TextStyle(

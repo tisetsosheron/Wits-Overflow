@@ -142,7 +142,7 @@ class _ResetPasswordState extends State<ResetPassword>{
                     child: Container(
                       padding: EdgeInsets.all(20),
                       decoration: BoxDecoration(
-                          color: Colors.teal,
+                          color: Colors.blue,
                           borderRadius: BorderRadius.circular(10)),
                       child: Center(
                         child: Text(
