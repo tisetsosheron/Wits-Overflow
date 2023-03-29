@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:wits_overflow/ResetPassword.dart';
 import 'package:wits_overflow/homepage.dart';
 
 class LoginPage extends StatefulWidget {
@@ -8,7 +9,6 @@ class LoginPage extends StatefulWidget {
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
-
 class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -162,7 +162,13 @@ class _LoginPageState extends State<LoginPage> {
                           'Forgotten password?',
                           style: TextStyle(color: Colors.blue, fontSize: 17),
                         ),
-                        // onTap: resetpassword,
+                        onTap: (){
+                          Navigator.push(context,
+                              MaterialPageRoute(
+                                  builder: (context){
+                                    return ResetPassword();
+                                  })
+                          );},
                       )
                     ],
                   ),
