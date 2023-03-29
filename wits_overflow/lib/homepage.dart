@@ -42,7 +42,7 @@ class Dashboard extends StatelessWidget {
               title: const Text("Logout"),
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => LoginPage(),
+                  builder: (context) => LoginPage(onTap: () {  },),
                 ));
               },
             ),

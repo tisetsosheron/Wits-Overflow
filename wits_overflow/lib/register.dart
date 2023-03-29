@@ -1,10 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wits_overflow/homepage.dart';
+import 'package:flutter_emoji/flutter_emoji.dart';
 
-enum rolesEnum { Moderator, Participant }
+enum rolesEnum { Moderator, RegularUser }
 
 class Register extends StatefulWidget {
-  const Register({Key? key}) : super(key: key);
+  final void Function()? onTap;
+  const Register({super.key, required this.onTap});
 
   @override
   State<Register> createState() => _RegisterState();
@@ -12,6 +15,56 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   rolesEnum? _rolesEnum;
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
+
+  Future Register() async {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        });
+
+    try {
+      if (passwordController.text == confirmPasswordController) {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: emailController.text.trim(),
+            password: passwordController.text.trim());
+      } else {
+        //error message
+        errorMessage("passwords don't match");
+      }
+
+      Navigator.pop(context);
+     
+    } on FirebaseAuthException catch (e) {
+      Navigator.pop(context);
+
+      errorMessage(e.code);
+    }
+  }
+
+  //error message popup
+  void errorMessage(String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Colors.blue,
+          title: Center(
+            child: Text(
+              message,
+              style: const TextStyle(color: Colors.white),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,6 +80,18 @@ class _RegisterState extends State<Register> {
                     height: 15,
                   ),
 
+                  const Text(
+                    "Create an account here",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500),
+                  ),
+
+                  const SizedBox(
+                    height: 20,
+                  ),
+
                   //email textfield
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -35,10 +100,11 @@ class _RegisterState extends State<Register> {
                             color: Colors.grey[200],
                             border: Border.all(color: Colors.white),
                             borderRadius: BorderRadius.circular(12)),
-                        child: const Padding(
+                        child: Padding(
                           padding: EdgeInsets.only(left: 20.0),
                           child: TextField(
-                            decoration: InputDecoration(
+                            controller: emailController,
+                            decoration: const InputDecoration(
                                 border: InputBorder.none,
                                 hintText: 'email address'),
                           ),
@@ -60,21 +126,22 @@ class _RegisterState extends State<Register> {
                             color: Colors.grey[200],
                             border: Border.all(color: Colors.white),
                             borderRadius: BorderRadius.circular(12)),
-                        child: const Padding(
+                        child: Padding(
                           padding: EdgeInsets.only(left: 20.0),
                           child: TextField(
-                            decoration: InputDecoration(
+                            controller: passwordController,
+                            obscureText: true,
+                            decoration: const InputDecoration(
                                 border: InputBorder.none, hintText: 'Password'),
                           ),
                         )),
                   ),
-                  //email textfield
 
                   //confirm password textfield
                   const SizedBox(
                     height: 15,
                   ),
-                  //email textfield
+
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25),
                     child: Container(
@@ -82,11 +149,12 @@ class _RegisterState extends State<Register> {
                             color: Colors.grey[200],
                             border: Border.all(color: Colors.white),
                             borderRadius: BorderRadius.circular(12)),
-                        child: const Padding(
+                        child: Padding(
                           padding: EdgeInsets.only(left: 20.0),
                           child: TextField(
+                            controller: confirmPasswordController,
                             obscureText: true,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                                 border: InputBorder.none,
                                 hintText: 'Confirm Password'),
                           ),
@@ -95,7 +163,7 @@ class _RegisterState extends State<Register> {
                   const SizedBox(
                     height: 15,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 4,
                   ),
 
@@ -124,11 +192,11 @@ class _RegisterState extends State<Register> {
                         Expanded(
                           child: RadioListTile<rolesEnum>(
                               contentPadding: const EdgeInsets.all(0.0),
-                              value: rolesEnum.Participant,
+                              value: rolesEnum.RegularUser,
                               groupValue: _rolesEnum,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(5)),
-                              title: Text(rolesEnum.Participant.name),
+                              title: Text(rolesEnum.RegularUser.name),
                               onChanged: (val) {
                                 setState(() {
                                   _rolesEnum = val;
@@ -151,7 +219,7 @@ class _RegisterState extends State<Register> {
                             borderRadius: BorderRadius.circular(12)),
                         child: const Center(
                           child: Text(
-                            'Sign up',
+                            'Register',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
@@ -213,9 +281,9 @@ class _RegisterState extends State<Register> {
                       ),
                       const SizedBox(width: 4),
                       GestureDetector(
-                        //onTap: widget.onTap,
+                        onTap: widget.onTap,
                         child: const Text(
-                          'Login here',
+                          'Login now',
                           style: TextStyle(
                             color: Colors.blue,
                             fontWeight: FontWeight.bold,
@@ -224,19 +292,11 @@ class _RegisterState extends State<Register> {
                       ),
                     ],
                   )
-
-                  //not a member? register now
                 ],
               ),
             ),
           ),
         ));
-  }
-
-  void Register() {
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => Dashboard(),
-    ));
   }
 
   // void resetpassword() {
