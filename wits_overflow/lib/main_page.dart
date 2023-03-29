@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:wits_overflow/homepage.dart';
 import 'package:wits_overflow/signin.dart';
 
+import 'login_or_register.dart';
+
 class MainPage extends StatelessWidget {
   const MainPage({super.key});
 
@@ -15,7 +17,7 @@ class MainPage extends StatelessWidget {
         if (snapshot.hasData) {
           return Dashboard();
         } else {
-          return LoginPage();
+          return const LoginOrRegister();
         }
       },
     ));
