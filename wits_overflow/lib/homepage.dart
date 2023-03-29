@@ -2,7 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wits_overflow/signin.dart';
 
-class Dashboard extends StatelessWidget {
+class Dashboard extends StatefulWidget {
+  @override
+  State<Dashboard> createState() => _DashboardState();
+}
+
+class _DashboardState extends State<Dashboard> {
+  final user = FirebaseAuth.instance.currentUser!;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,13 +19,18 @@ class Dashboard extends StatelessWidget {
           children: [
             const DrawerHeader(
               child: Center(
-                child: Image(image: AssetImage('images/WITS.png'),
+                child: Image(
+                  image: AssetImage('images/WITS.png'),
                 ),
               ),
             ),
             ListTile(
               leading: Icon(Icons.person),
               title: const Text("Profile"),
+              subtitle: Text(
+                user.email!,
+                style: const TextStyle(color: Colors.grey),
+              ),
               onTap: () {},
             ),
             ListTile(
@@ -42,7 +53,9 @@ class Dashboard extends StatelessWidget {
               title: const Text("Logout"),
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => LoginPage(onTap: () {  },),
+                  builder: (context) => LoginPage(
+                    onTap: () {},
+                  ),
                 ));
               },
             ),

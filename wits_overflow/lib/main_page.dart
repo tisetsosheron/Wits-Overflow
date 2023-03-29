@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:wits_overflow/homepage.dart';
 import 'package:wits_overflow/signin.dart';
 
-import 'login_or_register.dart';
-
 class MainPage extends StatelessWidget {
   const MainPage({super.key});
 
@@ -15,9 +13,9 @@ class MainPage extends StatelessWidget {
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return Dashboard();
+          return LoginPage(onTap: () {});
         } else {
-          return const LoginOrRegister();
+          return Dashboard();
         }
       },
     ));

@@ -1,13 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wits_overflow/homepage.dart';
+import 'package:wits_overflow/register.dart';
 
 class LoginPage extends StatefulWidget {
   final Function()? onTap;
-  const LoginPage({
-    super.key , required this.onTap
-
-  });
+  const LoginPage({super.key, required this.onTap});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -216,7 +214,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       const SizedBox(width: 4),
                       GestureDetector(
-                        onTap: widget.onTap,
+                        onTap: registerpage,
                         child: const Text(
                           'Register now',
                           style: TextStyle(
@@ -243,9 +241,9 @@ class _LoginPageState extends State<LoginPage> {
 
   // }
 
-  // void registerpage() {
-  //   Navigator.of(context).push(MaterialPageRoute(
-  //     builder: (context) => register_page,
-  //   ));
-  // }
+  void registerpage() {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => Register(onTap: () {}),
+    ));
+  }
 }

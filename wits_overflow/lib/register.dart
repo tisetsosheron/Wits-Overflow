@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:wits_overflow/homepage.dart';
 import 'package:flutter_emoji/flutter_emoji.dart';
+import 'package:wits_overflow/signin.dart';
 
 enum rolesEnum { Moderator, RegularUser }
 
@@ -15,54 +17,90 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   rolesEnum? _rolesEnum;
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  final confirmPasswordController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
 
   Future Register() async {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        });
-
-    try {
-      if (passwordController.text == confirmPasswordController) {
+    if (_passwordController.text.trim() ==
+        _confirmPasswordController.text.trim()) {
+      try {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
-            email: emailController.text.trim(),
-            password: passwordController.text.trim());
-      } else {
-        //error message
-        errorMessage("passwords don't match");
+            email: _emailController.text.trim(),
+            password: _passwordController.text.trim());
+        Fluttertoast.showToast(
+            msg: "Successfully Registered!",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 10,
+            backgroundColor: Colors.blue,
+            textColor: Colors.white,
+            fontSize: 15);
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => LoginPage(
+            onTap: () {},
+          ),
+        ));
+      } on FirebaseAuthException catch (e) {
+        if (e.code == "invalid-email") {
+          invalidEmail();
+        } else if (e.code == "weak-password") {
+          weakPassword();
+        } else if (e.code == "email-already-in-use") {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return const AlertDialog(
+                title: Text('Email Already in use'),
+              );
+            },
+          );
+        }
       }
-
-      Navigator.pop(context);
-     
-    } on FirebaseAuthException catch (e) {
-      Navigator.pop(context);
-
-      errorMessage(e.code);
+    } else {
+      WrongConfirmPassword();
     }
   }
 
-  //error message popup
-  void errorMessage(String message) {
+  void WrongConfirmPassword() {
     showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          backgroundColor: Colors.blue,
-          title: Center(
-            child: Text(
-              message,
-              style: const TextStyle(color: Colors.white),
-            ),
-          ),
+        return const AlertDialog(
+          title: Text('Passwords do not match'),
         );
       },
     );
+  }
+
+  void invalidEmail() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const AlertDialog(
+          title: Text('Invalid Email'),
+        );
+      },
+    );
+  }
+
+  void weakPassword() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const AlertDialog(
+          title: Text('Weak Password'),
+        );
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
   }
 
   @override
@@ -103,7 +141,7 @@ class _RegisterState extends State<Register> {
                         child: Padding(
                           padding: EdgeInsets.only(left: 20.0),
                           child: TextField(
-                            controller: emailController,
+                            controller: _emailController,
                             decoration: const InputDecoration(
                                 border: InputBorder.none,
                                 hintText: 'email address'),
@@ -129,7 +167,7 @@ class _RegisterState extends State<Register> {
                         child: Padding(
                           padding: EdgeInsets.only(left: 20.0),
                           child: TextField(
-                            controller: passwordController,
+                            controller: _passwordController,
                             obscureText: true,
                             decoration: const InputDecoration(
                                 border: InputBorder.none, hintText: 'Password'),
@@ -152,7 +190,7 @@ class _RegisterState extends State<Register> {
                         child: Padding(
                           padding: EdgeInsets.only(left: 20.0),
                           child: TextField(
-                            controller: confirmPasswordController,
+                            controller: _confirmPasswordController,
                             obscureText: true,
                             decoration: const InputDecoration(
                                 border: InputBorder.none,
@@ -281,7 +319,7 @@ class _RegisterState extends State<Register> {
                       ),
                       const SizedBox(width: 4),
                       GestureDetector(
-                        onTap: widget.onTap,
+                        onTap: signin,
                         child: const Text(
                           'Login now',
                           style: TextStyle(
@@ -299,10 +337,9 @@ class _RegisterState extends State<Register> {
         ));
   }
 
-  // void resetpassword() {
-  //   Navigator.of(context).push(MaterialPageRoute(
-  //     builder: (context) => //reset_page,
-  //   ));
-
-  // }
+  void signin() {
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => LoginPage(onTap: () {})),
+    );
+  }
 }
