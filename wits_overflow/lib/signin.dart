@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:wits_overflow/homepage.dart';
 import 'package:wits_overflow/register.dart';
 
+import 'ResetPassword.dart';
+
 class LoginPage extends StatefulWidget {
   final Function()? onTap;
   const LoginPage({super.key, required this.onTap});
@@ -158,7 +160,7 @@ class _LoginPageState extends State<LoginPage> {
                           'Forgot password?',
                           style: TextStyle(color: Colors.blue, fontSize: 17),
                         ),
-                        // onTap: resetpassword,
+                         onTap: resetpassword,
                       )
                     ],
                   ),
@@ -234,12 +236,12 @@ class _LoginPageState extends State<LoginPage> {
         ));
   }
 
-  // void resetpassword() {
-  //   Navigator.of(context).push(MaterialPageRoute(
-  //     builder: (context) => //reset_page,
-  //   ));
+   void resetpassword() {
+     Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => ResetPassword(),
+     ));
 
-  // }
+   }
 
   void registerpage() {
     Navigator.of(context).push(MaterialPageRoute(
