@@ -24,6 +24,7 @@ class _DashboardState extends State<Dashboard> {
                 ),
               ),
             ),
+            
             ListTile(
               leading: Icon(Icons.person),
               title: const Text("Profile"),
