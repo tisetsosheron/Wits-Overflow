@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:wits_overflow/homepage.dart';
 import 'package:wits_overflow/signin.dart';
 
+//this is the authorization page
+
 class MainPage extends StatelessWidget {
   const MainPage({super.key});
 
