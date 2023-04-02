@@ -1,2 +1,3 @@
-# Wits-Overflow
-Designing and implementing an online forum for the school of CSAM, in the vein of other such forums like Stack  Overflow.
+# circle-ci badge
+[![tisetsosheron](https://circleci.com/gh/tisetsosheron/Wits-Overflow.svg?style=svg)](https://github.com/tisetsosheron/Wits-Overflow)
+
