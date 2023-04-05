@@ -25,7 +25,7 @@ class _DashboardState extends State<Dashboard> {
               ),
             ),
             
-            ListTile(
+            ListTile( //Icon tiles for each option
               leading: Icon(Icons.person),
               title: const Text("Profile"),
               subtitle: Text(
@@ -63,7 +63,7 @@ class _DashboardState extends State<Dashboard> {
           ],
         ),
       ),
-      body: SafeArea(
+      body: SafeArea( //Alignments of different tiles
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -77,7 +77,7 @@ class _DashboardState extends State<Dashboard> {
                     child: Text(
                       "Dashboard",
                       style: TextStyle(
-                          color: Colors.black,
+                          color: Colors.black, //Colour of background
                           fontSize: 26.0,
                           fontWeight: FontWeight.w500),
                       textAlign: TextAlign.start,
@@ -123,7 +123,7 @@ class _DashboardState extends State<Dashboard> {
                                 ],
                               ),
                             )))),
-                    SizedBox(
+                    SizedBox( //Size of boxes in relation to screen
                         width: 160.0,
                         height: 160.0,
                         child: Card(
