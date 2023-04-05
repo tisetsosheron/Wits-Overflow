@@ -125,6 +125,7 @@ class _ResetPasswordState extends State<ResetPassword>{
                               Icons.email,
                               color: Colors.black,
                             ),
+                            //hint for email address
                             hintText: 'Email Address',
                             hintStyle: TextStyle(
                               color: Colors.black38,

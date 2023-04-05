@@ -19,10 +19,12 @@ class _LoginOrRegisterState extends State<LoginOrRegister> { //Showing the Login
 
   @override
   Widget build(BuildContext context) {
+    //if user is registered show login page
     if (showLogin) {
       return LoginPage(
         onTap: togglePages,
       );
+      //else  show register page
     } else {
       return Register(
         onTap: togglePages,

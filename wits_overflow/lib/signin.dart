@@ -80,6 +80,7 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(
                     height: 15,
                   ),
+                  //email textfield
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25),
                     child: Container(
@@ -99,13 +100,12 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(
                     height: 15,
                   ),
-                  //email textfield
 
-                  //password textfield
+            
                   const SizedBox(
                     height: 15,
                   ),
-                  //email textfield
+                  //password textfield
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25),
                     child: Container(
@@ -169,6 +169,7 @@ class _LoginPageState extends State<LoginPage> {
                     height: 40,
                   ),
 
+                  //or continue wih google
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25),
                     child: Row(
@@ -206,7 +207,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ])),
 
-                  //not a member? register now
+                  //if not a member? register now
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
