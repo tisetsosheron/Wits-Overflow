@@ -109,6 +109,7 @@ class _LoginPageState extends State<LoginPage> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25),
                     child: Container(
+                      //Colour of the boxes for homepage
                         decoration: BoxDecoration(
                             color: Colors.grey[200],
                             border: Border.all(color: Colors.white),

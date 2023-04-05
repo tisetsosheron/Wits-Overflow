@@ -29,7 +29,7 @@ class _RegisterState extends State<Register> {
             email: _emailController.text.trim(),
             password: _passwordController.text.trim());
         Fluttertoast.showToast(
-            msg: "Successfully Registered!",
+            msg: "Successfully Registered!", //Show message
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.CENTER,
             timeInSecForIosWeb: 10,
@@ -42,11 +42,11 @@ class _RegisterState extends State<Register> {
           ),
         ));
       } on FirebaseAuthException catch (e) {
-        if (e.code == "invalid-email") {
+        if (e.code == "invalid-email") { //Incorrect Email Format
           invalidEmail();
-        } else if (e.code == "weak-password") {
-          weakPassword();
-        } else if (e.code == "email-already-in-use") {
+        } else if (e.code == "weak-password") { //Password too easy to guess
+          weakPassword(); 
+        } else if (e.code == "email-already-in-use") { //Already existing email
           showDialog(
             context: context,
             builder: (context) {
