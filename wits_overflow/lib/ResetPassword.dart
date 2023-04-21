@@ -28,7 +28,7 @@ class _ResetPasswordState extends State<ResetPassword>{
         context: context,
         builder: (context) {
           return AlertDialog(
-            content: Text('Password resent link sent! please check your email'),
+            content: Text('Password resent link sent! please check your email'), //Email sent
           );
         },
       );}
@@ -125,6 +125,7 @@ class _ResetPasswordState extends State<ResetPassword>{
                               Icons.email,
                               color: Colors.black,
                             ),
+                            //hint for email address
                             hintText: 'Email Address',
                             hintStyle: TextStyle(
                               color: Colors.black38,

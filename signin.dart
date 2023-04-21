@@ -1,13 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wits_overflow/homepage.dart';
-import 'package:wits_overflow/register.dart';
-
-import 'ResetPassword.dart';
 
 class LoginPage extends StatefulWidget {
-  final Function()? onTap;
-  const LoginPage({super.key, required this.onTap});
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -36,24 +32,31 @@ class _LoginPageState extends State<LoginPage> {
       ));
     } on FirebaseAuthException catch (e) {
       Navigator.pop(context);
-
-      ErrorMessage(e.code);
+      if (e.code == 'user-not-found') {
+        WrongEmail();
+      } else if (e.code == 'wrong-password') {
+        WrongPassword();
+      }
     }
   }
 
-  //error message popup
-  void ErrorMessage(String message) {
+  void WrongEmail() {
     showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          backgroundColor: Colors.blue,
-          title: Center(
-            child: Text(
-              message,
-              style: const TextStyle(color: Colors.white),
-            ),
-          ),
+        return const AlertDialog(
+          title: Text('Incorrect Email'),
+        );
+      },
+    );
+  }
+
+  void WrongPassword() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const AlertDialog(
+          title: Text('Incorrect Password'),
         );
       },
     );
@@ -76,8 +79,33 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Image(image: AssetImage('images/WITS.png')),
-                  const SizedBox(
+                  Image(image: AssetImage('images/WITS.png')),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25),
+                    child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.grey[200],
+                            border: Border.all(color: Colors.white),
+                            borderRadius: BorderRadius.circular(12)),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 20.0),
+                          child: TextField(
+                            controller: _emailController,
+                            decoration: InputDecoration(
+                                border: InputBorder.none, hintText: 'Email'),
+                          ),
+                        )),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  //email textfield
+
+                  //password textfield
+                  SizedBox(
                     height: 15,
                   ),
                   //email textfield
@@ -91,43 +119,16 @@ class _LoginPageState extends State<LoginPage> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 20.0),
                           child: TextField(
-                            controller: _emailController,
-                            decoration: const InputDecoration(
-                                border: InputBorder.none, hintText: 'Email'),
-                          ),
-                        )),
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-
-            
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  //password textfield
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25),
-                    child: Container(
-                      //Colour of the boxes for homepage
-                        decoration: BoxDecoration(
-                            color: Colors.grey[200],
-                            border: Border.all(color: Colors.white),
-                            borderRadius: BorderRadius.circular(12)),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 20.0),
-                          child: TextField(
                             controller: _passwordController,
                             obscureText: true,
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
                                 border: InputBorder.none, hintText: 'Password'),
                           ),
                         )),
                   ),
-                  const SizedBox(
+                  SizedBox(
                     height: 15,
                   ),
-
                   //sign in button
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -138,7 +139,7 @@ class _LoginPageState extends State<LoginPage> {
                         decoration: BoxDecoration(
                             color: Colors.blue,
                             borderRadius: BorderRadius.circular(12)),
-                        child: const Center(
+                        child: Center(
                           child: Text(
                             'Sign In',
                             style: TextStyle(
@@ -150,84 +151,44 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(
+                  SizedBox(
                     height: 15,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       GestureDetector(
-                        child: const Text(
-                          'Forgot password?',
+                        child: Text(
+                          'Forgotten password?',
                           style: TextStyle(color: Colors.blue, fontSize: 17),
                         ),
-                         onTap: resetpassword,
+                        // onTap: resetpassword,
                       )
                     ],
                   ),
-                  const SizedBox(
-                    height: 40,
+                  SizedBox(
+                    height: 75,
                   ),
-
-                  //or continue wih google
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25),
-                    child: Row(
-                      children: [
-                        Expanded(
-                            child: Divider(
-                          thickness: 0.5,
-                          color: Colors.grey[400],
-                        )),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 25),
+                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                    child: Container(
+                      padding: EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                          color: Colors.green,
+                          borderRadius: BorderRadius.circular(12)),
+                      child: Center(
+                        child: GestureDetector(
                           child: Text(
-                            'Or continue with',
-                            style: TextStyle(color: Colors.grey.shade700),
+                            'Sign Up',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18),
                           ),
-                        ),
-                        Expanded(
-                            child: Divider(
-                          thickness: 0.5,
-                          color: Colors.grey[400],
-                        )),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 50),
-
-                  SingleChildScrollView(
-                      child: Column(children: [
-                    Image.asset(
-                      "images/google.jpg",
-                      width: 40,
-                    ),
-                    const SizedBox(
-                      height: 40,
-                    ),
-                  ])),
-
-                  //if not a member? register now
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        'Not a member?',
-                        style:
-                            TextStyle(color: Color.fromARGB(255, 97, 97, 97)),
-                      ),
-                      const SizedBox(width: 4),
-                      GestureDetector(
-                        onTap: registerpage,
-                        child: const Text(
-                          'Register now',
-                          style: TextStyle(
-                            color: Colors.blue,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          // onTap: registerpage,
                         ),
                       ),
-                    ],
+                    ),
                   )
 
                   //not a member? register now
@@ -238,16 +199,16 @@ class _LoginPageState extends State<LoginPage> {
         ));
   }
 
-   void resetpassword() {
-     Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => ResetPassword(),
-     ));
+  // void resetpassword() {
+  //   Navigator.of(context).push(MaterialPageRoute(
+  //     builder: (context) => //reset_page,
+  //   ));
 
-   }
+  // }
 
-  void registerpage() {
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => Register(onTap: () {}),
-    ));
-  }
+  // void registerpage() {
+  //   Navigator.of(context).push(MaterialPageRoute(
+  //     builder: (context) => register_page,
+  //   ));
+  // }
 }
