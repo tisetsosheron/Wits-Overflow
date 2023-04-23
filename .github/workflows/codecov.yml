@@ -5,26 +5,35 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-
+    
 jobs:
-  build-and-test:
+  test-and-coverage:
+    name: Test and Coverage
     runs-on: macos-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+    - uses: actions/checkout@v2
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16.x'
 
-    - name: Setup Flutter
+    - name: Install Dependencies
+      run: npm install
+      
+    - name: Install Flutter
       uses: subosito/flutter-action@v2.10.0
       with:
         flutter-version: '3.7.12'
-
-    - name: Install dependencies
+        
+    - name: Get Flutter Packages
       run: flutter pub get
-
-    - name: Build project
-      run: flutter build
-
+      
+    - name: Run Test and Coverage
+      run: |
+        flutter test --coverage
+        npm run coverage
+        
     - name: Run unit tests
       run: flutter test
       
