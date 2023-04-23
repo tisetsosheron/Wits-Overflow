@@ -1,4 +1,4 @@
-name: Build and Test
+name: Codecov
 
 on:
   push:
@@ -7,28 +7,41 @@ on:
     branches: [ main ]
 
 jobs:
-  build-and-test:
+  test-and-coverage:
     runs-on: macos-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Setup Flutter
-      uses: subosito/flutter-action@v2.10.0
-      with:
-        flutter-version: '3.7.12'
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
+          
+      - name: Setup Node.js
+        run: npm install
+        
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2.10.0
+        with:
+          flutter-version: '3.7.12'
 
-    - name: Install dependencies
-      run: flutter pub get
-
-    - name: Build project
-      run: flutter build
-
-    - name: Run unit tests
-      run: flutter test
+      - name: Get Flutter Packages
+        run: flutter pub get
       
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v2
-      with:
-        token: ${{ secrets.CODECOV }}
+      - name: Run unit tests
+        run: flutter test
+        
+      - name: Run Tests and Coverage
+        run: |
+         flutter test --coverage
+         npm run coverage
+
+      - name: Run unit tests
+        run: flutter test
+      
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v2.1.0
+        with:
+          token: ${{ secrets.CODECOV }}
