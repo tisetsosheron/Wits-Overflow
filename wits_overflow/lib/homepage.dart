@@ -26,10 +26,7 @@ class _DashboardState extends State<Dashboard> {
                 ),
               ),
               ListTile(
-<<<<<<< HEAD
                 //Icon tiles for each option
-=======
->>>>>>> e2f6dd12a6d0884581c6f37be237bb4158817161
                 leading: Icon(Icons.person),
                 title: const Text("Profile"),
                 subtitle: Text(
@@ -68,10 +65,7 @@ class _DashboardState extends State<Dashboard> {
           ),
         ),
         body: SafeArea(
-<<<<<<< HEAD
           //Alignments of different tiles
-=======
->>>>>>> e2f6dd12a6d0884581c6f37be237bb4158817161
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -85,11 +79,8 @@ class _DashboardState extends State<Dashboard> {
                       child: Text(
                         "Dashboard",
                         style: TextStyle(
-<<<<<<< HEAD
-                            color: Colors.black, //Colour of background
-=======
+                        //Colour of background
                             color: Colors.black,
->>>>>>> e2f6dd12a6d0884581c6f37be237bb4158817161
                             fontSize: 26.0,
                             fontWeight: FontWeight.w500),
                         textAlign: TextAlign.start,
@@ -136,10 +127,7 @@ class _DashboardState extends State<Dashboard> {
                                 ),
                               )))),
                       SizedBox(
-<<<<<<< HEAD
                           //Size of boxes in relation to screen
-=======
->>>>>>> e2f6dd12a6d0884581c6f37be237bb4158817161
                           width: 160.0,
                           height: 160.0,
                           child: Card(
@@ -205,11 +193,7 @@ class _DashboardState extends State<Dashboard> {
           ),
         ),
         floatingActionButton: FloatingActionButton(
-<<<<<<< HEAD
             child: const Icon(Icons.add),
-=======
-            child: Icon(Icons.add),
->>>>>>> e2f6dd12a6d0884581c6f37be237bb4158817161
             onPressed: () {
               //Navigator.of(context).pushNamed('/ask');
               Navigator.of(context).push(MaterialPageRoute(
