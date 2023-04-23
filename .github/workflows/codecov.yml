@@ -30,16 +30,14 @@ jobs:
       - name: Get Flutter Packages
         run: flutter pub get
       
-      - name: Run unit tests
-        run: flutter test
+      #- name: Run unit tests
+       # run: flutter test
         
       - name: Run Tests and Coverage
         run: |
          flutter test --coverage
          npm run coverage
 
-      - name: Run unit tests
-        run: flutter test
       
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2.1.0
