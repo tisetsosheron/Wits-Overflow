@@ -79,8 +79,7 @@ class _DashboardState extends State<Dashboard> {
                       child: Text(
                         "Dashboard",
                         style: TextStyle(
-                        //Colour of background
-                            color: Colors.black,
+                            color: Colors.black, //Colour of background
                             fontSize: 26.0,
                             fontWeight: FontWeight.w500),
                         textAlign: TextAlign.start,
