@@ -34,7 +34,7 @@ class _ViewQuestionsState extends State<ViewQuestions>{
    return Scaffold(
      appBar: AppBar(
        backgroundColor: Colors.white70,
-       title:!isSearching? Text(
+       title:!isSearching? const Text(
          "Wits Overflow",
        style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold
        ))
