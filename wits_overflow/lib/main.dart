@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:wits_overflow/main_page.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:wits_overflow/questions.dart';
 import 'package:wits_overflow/register.dart';
+import 'fetch_questions.dart';
+import 'questions.dart';
 import 'homepage.dart';
 
 void main() async {
@@ -16,9 +19,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MainPage(),
+      home: QuestionListWidget(),
     );
   }
 }
