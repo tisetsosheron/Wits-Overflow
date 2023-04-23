@@ -73,7 +73,12 @@ flutter {
 dependencies {
     implementation 'androidx.multidex:multidex: 2.0.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+<<<<<<< HEAD
     implementation 'com.google.firebase:firebase-auth:21.0.1'
     implementation 'com.google.firebase:firebase-firestore:23.0.1'
+=======
+    implementation 'com.android.support:multidex:1.0.3'
+
+>>>>>>> e2f6dd12a6d0884581c6f37be237bb4158817161
 }
 apply plugin: 'com.google.gms.google-services'
