@@ -7,39 +7,24 @@ on:
     branches: [ main ]
 
 jobs:
-  test-and-coverage:
-    runs-on: macos-latest
-
+  unit-tests:
+    name: Run unit tests on macOS-latest
+    runs-on: macOS-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
+      - name: Setup Java
+        uses: actions/setup-java@v2
         with:
-          node-version: 16.x
-          
-      - name: Setup Node.js
-        run: npm install
-        
-      - name: Install Flutter
-        uses: subosito/flutter-action@v2.10.0
+          distribution: 'zulu'
+          java-version: '11'
+      - name: Setup Flutter (stable)
+        uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.7.12'
-
-      - name: Get Flutter Packages
-        run: flutter pub get
-      
-      #- name: Run unit tests
-       # run: flutter test
-        
-     # - name: Run Tests and Coverage
-     #   run: |
-      #   flutter test --coverage
-        # npm run coverage
-
-      
+          channel: 'stable'
+      - run: flutter pub get
+      #- run: flutter test --coverage --no-sound-null-safety
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v2.1.0
+        uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV }}
