@@ -2,6 +2,7 @@
 [![tisetsosheron](https://circleci.com/gh/tisetsosheron/Wits-Overflow.svg?style=svg)](https://github.com/tisetsosheron/Wits-Overflow)
 
 Codecov badge
-[![.github/workflows/codecov.yml](https://github.com/tisetsosheron/Wits-Overflow/actions/workflows/codecov.yml/badge.svg?branch=main)](https://github.com/tisetsosheron/Wits-Overflow/actions/workflows/codecov.yml)
+
+[![Codecov](https://github.com/tisetsosheron/Wits-Overflow/actions/workflows/codecov.yml/badge.svg)](https://github.com/tisetsosheron/Wits-Overflow/actions/workflows/codecov.yml)
 
 
