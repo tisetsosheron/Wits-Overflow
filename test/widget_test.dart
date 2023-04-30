@@ -1,49 +1,30 @@
+// This is a basic Flutter widget test.
+//
+// To perform an interaction with a widget in your test, use the WidgetTester
+// utility in the flutter_test package. For example, you can send tap and scroll
+// gestures. You can also use WidgetTester to find child widgets in the widget
+// tree, read text, and verify that the values of widget properties are correct.
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:wits_overflow/homepage.dart';
-import 'package:wits_overflow/signin.dart';
 
-//testing the login page
+import 'package:wits_overflow/main.dart';
+
 void main() {
-  testWidgets('Test login page', (WidgetTester tester) async {
-    // Find the email and password text fields.
-    final emailField = find.widgetWithText(TextField, 'Email');
-    final passwordField = find.widgetWithText(TextField, 'Password');
-    // Tap the sign in button.
-    final signInButton = find.widgetWithText(GestureDetector, 'Sign In');
+  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+    // Build our app and trigger a frame.
+    await tester.pumpWidget(const MaterialApp());
 
-    // Build the LoginPage widget.
-    await tester.pumpWidget(LoginPage(
-      onTap: () {},
-    ));
-    // Wait for the dialog to disappear.
-    await tester.pumpAndSettle();
-    // Wait for the dialog to appear.
+    // Verify that our counter starts at 0.
+    expect(find.text('0'), findsOneWidget);
+    expect(find.text('1'), findsNothing);
+
+    // Tap the '+' icon and trigger a frame.
+    await tester.tap(find.byIcon(Icons.add));
     await tester.pump();
 
-    // Enter text into the email and password fields.
-    await tester.enterText(emailField, 'test@example.com');
-    await tester.enterText(passwordField, 'password');
-    await tester.tap(signInButton);
-
-    // Test that the email and password fields are initially empty.
-    expect((emailField.evaluate().single.widget as TextField).controller!.text,
-        '');
-    expect(
-        (passwordField.evaluate().single.widget as TextField).controller!.text,
-        '');
-
-    // Test that the text was entered correctly.
-    expect((emailField.evaluate().single.widget as TextField).controller!.text,
-        'test@example.com');
-    expect(
-        (passwordField.evaluate().single.widget as TextField).controller!.text,
-        'password');
-
-    // Test that the dialog is displayed.
-    expect(find.byType(CircularProgressIndicator), findsOneWidget);
-
-    // Test that the user is navigated to the Dashboard page.
-    expect(find.byType(Dashboard), findsOneWidget);
+    // Verify that our counter has incremented.
+    expect(find.text('0'), findsNothing);
+    expect(find.text('1'), findsOneWidget);
   });
 }
