@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:wits_overflow/homepage.dart';
+import 'package:wits_overflow/signin.dart';
 
 class ProfileEdit extends StatefulWidget {
   const ProfileEdit({Key? key}) : super(key: key);
@@ -24,11 +25,6 @@ class _ProfileEditState extends State<ProfileEdit> {
 
   Future _createUser() async {
     try {
-      final user = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
-      );
-
       final docuser = FirebaseFirestore.instance
           .collection('users')
           .doc(emailController.text);
@@ -37,6 +33,7 @@ class _ProfileEditState extends State<ProfileEdit> {
         'email': emailController.text.trim(),
         'password': passwordController.text.trim(),
         'location': locationController.text.trim(),
+        'image': imageurl,
       };
       await docuser.set(json);
 
@@ -81,6 +78,15 @@ class _ProfileEditState extends State<ProfileEdit> {
     } catch (e) {
       print(e);
     }
+  }
+
+  getUserInfo() {
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .snapshots()
+        .listen((event) {});
   }
 
   @override
@@ -163,8 +169,8 @@ class _ProfileEditState extends State<ProfileEdit> {
               buildTextField("Full Name", "Username", false, nameController),
               buildTextField(
                   "Email", "userEmail@gmail.com", false, emailController),
-              buildTextField(
-                  "Password", "Enter Password", true, passwordController),
+              buildTextField("Change Password", "Enter Password", true,
+                  passwordController),
               buildTextField(
                   "Location", "South Africa", false, locationController),
               SizedBox(height: 30),
@@ -188,6 +194,9 @@ class _ProfileEditState extends State<ProfileEdit> {
                             backgroundColor: Colors.grey,
                             textColor: Colors.black,
                             fontSize: 15);
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => LoginPage(onTap: () {}),
+                        ));
                       } on FirebaseAuthException catch (e) {
                         Fluttertoast.showToast(
                             msg: e.code,

@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:wits_overflow/ProfileEdit.dart';
-import 'package:wits_overflow/model/Question.dart';
-import 'package:wits_overflow/view/history_view.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+import 'ProfileEdit.dart';
+import 'fetch_questions.dart';
+import 'model/Question.dart';
+import 'view/history_view.dart';
 
 class CounterScreenState extends StatefulWidget {
   const CounterScreenState({super.key});
@@ -14,6 +17,7 @@ class CounterScreenState extends StatefulWidget {
 
 class CounterScreen extends State<CounterScreenState> {
   TextEditingController _questionController = TextEditingController();
+
   Question _question = Question();
   @override
   bool isSearching = false;
@@ -38,12 +42,30 @@ class CounterScreen extends State<CounterScreenState> {
     });
   }
 
+  List usersQuestionsList = [];
+  void initState() {
+    super.initState();
+    FetchDatabaseList();
+  }
+
+  FetchDatabaseList() async {
+    dynamic resultant = await DatabaseManager().getUsersList();
+
+    if (resultant == null) {
+      print('Unable to print');
+    } else {
+      setState(() {
+        usersQuestionsList = resultant;
+      });
+    }
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white70,
         title: !isSearching
-            ? Text("Questions",
+            ? Text("Add Question",
                 style:
                     TextStyle(color: Colors.black, fontWeight: FontWeight.bold))
             : TextField(
@@ -100,7 +122,7 @@ class CounterScreen extends State<CounterScreenState> {
         children: <Widget>[
           Expanded(
             child: ListView.builder(
-              itemCount: 1,
+              itemCount: 0,
               itemBuilder: (BuildContext context, int index) => Container(
                 width: MediaQuery.of(context).size.width,
                 padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
@@ -146,10 +168,11 @@ class CounterScreen extends State<CounterScreenState> {
                                     ),
                                     //this is the text that will show the username of the person that has answered a question
                                     Text(
-                                      '',
+                                      _questionController.text.trim(),
                                       style: TextStyle(
                                           color: Colors.black, fontSize: 18),
                                     ),
+
                                     //a sizedbox to create space between profile name and answer
                                     SizedBox(
                                       width: 20,
@@ -209,7 +232,7 @@ class CounterScreen extends State<CounterScreenState> {
                                 Text(
                                   "$counter likes",
                                 ),
-                                SizedBox(
+                                SizedBo_questionController.text = "";x(
                                   width: 20.0,
                                   height: 25.0,
                                 ),
@@ -236,6 +259,7 @@ class CounterScreen extends State<CounterScreenState> {
                 tooltip: 'post',
                 onPressed: () {
                   Postquestion();
+                  DatabaseManager().getUsersList();
                 },
               )
             ],
@@ -255,12 +279,28 @@ class CounterScreen extends State<CounterScreenState> {
         .doc(FirebaseAuth.instance.currentUser?.uid)
         .collection('questions')
         .add(_question.toJson());
-    _questionController.text = "";
+    _questionController.text = '';
+    Fluttertoast.showToast(
+        msg: "Question Posted.Click on the history icon to view",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 5,
+        backgroundColor: Colors.grey,
+        textColor: Colors.black,
+        fontSize: 20);
   }
 
   void History() {
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => HistoryView(),
     ));
+  }
+
+  String returnText(String question) {
+    if (question == null) {
+      return '';
+    } else {
+      return question;
+    }
   }
 }

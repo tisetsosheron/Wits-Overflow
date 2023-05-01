@@ -1,8 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:wits_overflow/Answers.dart';
+import 'package:wits_overflow/fetch_data.dart';
+import 'package:wits_overflow/fetch_questions.dart';
 import 'package:wits_overflow/model/Question.dart';
 import 'package:wits_overflow/view/questions_card.dart';
+import 'package:intl/intl.dart';
+
+import '../fetch_dates.dart';
 
 class HistoryView extends StatefulWidget {
   @override
@@ -10,11 +16,19 @@ class HistoryView extends StatefulWidget {
 }
 
 class _HistoryViewState extends State<HistoryView> {
-  List<Object> _historyList = [];
+  List<String> docIDs = [];
 
-  void didChangedDependencies() {
-    super.didChangeDependencies();
-    getUserQuestionsList();
+  Future getDocId() async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .collection('questions')
+        .orderBy('created', descending: true)
+        .get()
+        .then((snapshot) => snapshot.docs.forEach((document) {
+              print(document.reference);
+              docIDs.add(document.reference.id);
+            }));
   }
 
   @override
@@ -24,27 +38,21 @@ class _HistoryViewState extends State<HistoryView> {
         title: Text("Questions History"),
       ),
       body: SafeArea(
-          child: ListView.builder(
-        itemCount: _historyList.length,
-        itemBuilder: (context, index) {
-          return QuestionsCard(_historyList[index] as Question);
+          child: FutureBuilder(
+        future: getDocId(),
+        builder: (context, snapshot) {
+          return ListView.builder(
+            itemCount: docIDs.length,
+            itemBuilder: (context, index) {
+              return Card(
+                  child: ListTile(
+                title: getQuestion(documentId: docIDs[index]),
+                trailing: getDates(documentId: docIDs[index]),
+              ));
+            },
+          );
         },
       )),
     );
-  }
-
-  Future getUserQuestionsList() async {
-    final uid = FirebaseAuth.instance.currentUser?.uid;
-    var data = await FirebaseFirestore.instance
-        .collection("users")
-        .doc(uid)
-        .collection("questions")
-        .orderBy('created', descending: true)
-        .get();
-
-    setState(() {
-      _historyList =
-          List.from(data.docs.map((doc) => Question.fromSnapshot(doc)));
-    });
   }
 }
