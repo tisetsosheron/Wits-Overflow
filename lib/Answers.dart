@@ -12,7 +12,7 @@ class CounterScreenState extends StatefulWidget {
   const CounterScreenState({super.key});
 
   @override
-  CounterScreen createState() => CounterScreen();
+  CounterScreen createState() => CounterScreen(); //Screen to ask questions appears
 }
 
 class CounterScreen extends State<CounterScreenState> {
