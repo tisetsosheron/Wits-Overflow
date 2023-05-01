@@ -28,7 +28,7 @@ class _ProfileEditState extends State<ProfileEdit> {
       final docuser = FirebaseFirestore.instance
           .collection('users')
           .doc(emailController.text);
-      final json = {
+      final json = { //User inputs data here
         'name': nameController.text.trim(),
         'email': emailController.text.trim(),
         'password': passwordController.text.trim(),
