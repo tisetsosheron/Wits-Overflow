@@ -1,78 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:wits_overflow/homepage.dart';
-import 'package:flutter_emoji/flutter_emoji.dart';
 import 'package:wits_overflow/signin.dart';
-
-import 'package:flutter_test/flutter_test.dart';
-import 'package:wits_overflow/register.dart';
-
-void main() {
-  group('Register widget', () {
-    late Register register;
-
-    setUp(() {
-      register = const Register(onTap: null);
-    });
-
-    testWidgets('has an email text field', (tester) async {
-      await tester.pumpWidget(register);
-
-      expect(find.byType(TextField), findsNWidgets(2));
-      expect(find.widgetWithText(TextField, 'email address'), findsOneWidget);
-    });
-
-    testWidgets('has a password text field', (tester) async {
-      await tester.pumpWidget(register);
-
-      expect(find.byType(TextField), findsNWidgets(2));
-      expect(find.widgetWithText(TextField, 'Password'), findsOneWidget);
-    });
-
-    testWidgets('has a confirm password text field', (tester) async {
-      await tester.pumpWidget(register);
-
-      expect(find.byType(TextField), findsNWidgets(2));
-      expect(
-          find.widgetWithText(TextField, 'Confirm Password'), findsOneWidget);
-    });
-
-    testWidgets('typing in the email field updates the controller value',
-        (tester) async {
-      await tester.pumpWidget(register);
-
-      const email = 'test@example.com';
-      await tester.enterText(
-          find.widgetWithText(TextField, 'email address'), email);
-
-      expect(register._emailController.text, equals(email));
-    });
-
-    testWidgets('typing in the password field updates the controller value',
-        (tester) async {
-      await tester.pumpWidget(register);
-
-      const password = 'password';
-      await tester.enterText(
-          find.widgetWithText(TextField, 'Password'), password);
-
-      expect(register._passwordController.text, equals(password));
-    });
-
-    testWidgets(
-        'typing in the confirm password field updates the controller value',
-        (tester) async {
-      await tester.pumpWidget(register);
-
-      const password = 'password';
-      await tester.enterText(
-          find.widgetWithText(TextField, 'Confirm Password'), password);
-
-      expect(register._confirmPasswordController.text, equals(password));
-    });
-  });
-}
 
 enum rolesEnum { Moderator, RegularUser }
 
