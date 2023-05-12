@@ -23,7 +23,7 @@ jobs:
         with:
           channel: 'stable'
       - run: flutter pub get
-      - run: flutter test --coverage --no-sound-null-safety
+      - run: flutter test --coverage
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
         with:
