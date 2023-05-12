@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install and set Fluter version
-        uses: subosito/flutter-actions@v1.4.0
+        uses: subosito/flutter-actions@v2.304.0
       - name: Checkout
         uses: actions/checkout@v2
       - name: Run upgrade
