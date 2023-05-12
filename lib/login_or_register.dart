@@ -3,7 +3,7 @@ import 'package:wits_overflow/register.dart';
 import 'package:wits_overflow/signin.dart';
 
 class LoginOrRegister extends StatefulWidget {
-  const LoginOrRegister({super.key});
+  const LoginOrRegister({super.key, required bool showLogin});
 
   @override
   State<LoginOrRegister> createState() => _LoginOrRegisterState();
