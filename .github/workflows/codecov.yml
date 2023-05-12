@@ -7,24 +7,41 @@ on:
     branches: [ Sprint3 ]
 
 jobs:
-  unit-tests:
-    name: Run unit tests on macOS-latest
-    runs-on: macOS-latest
+  tests:
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Install and set Fluter version
+        uses: subosito/flutter-actions@v1.4.0
+      - name: Checkout
         uses: actions/checkout@v2
-      - name: Setup Java
-        uses: actions/setup-java@v2
-        with:
-          distribution: 'zulu'
-          java-version: '11'
-      - name: Setup Flutter (stable)
-        uses: subosito/flutter-action@v2
-        with:
-          channel: 'stable'
-      - run: flutter pub get
-      - run: flutter test --coverage
+      - name: Run upgrade
+        run: flutter pub upgrade --major-versions
+      - name: install app dependencies
+        run: flutter pub get
+        
+      - name: Run tests
+        run: flutter tests --coverage
+      - name: Checkout
+        uses: actions/checkout@v2
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV }}
+          version: "v0.1.15"
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
