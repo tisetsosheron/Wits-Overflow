@@ -2,9 +2,9 @@ name: Codecov
 
 on:
   push:
-    branches: [ main ]
+    branches: [ Sprint3 ]
   pull_request:
-    branches: [ main ]
+    branches: [ Sprint3 ]
 
 jobs:
   unit-tests:
