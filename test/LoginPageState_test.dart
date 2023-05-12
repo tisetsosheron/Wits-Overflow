@@ -1,11 +1,11 @@
-/*import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:wits_overflow/register.dart';
 import 'package:wits_overflow/signin.dart';
 
-import 'ResetPassword.dart';
-import 'homepage.dart';
+import '../lib/ResetPassword.dart';
+import '../lib/homepage.dart';
 
 void main() {
   // Tests for LoginPage widget
@@ -79,4 +79,4 @@ void main() {
       expect(find.byType(Register), findsOneWidget);
     });
   });
-}*/
+}
