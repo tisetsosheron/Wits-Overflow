@@ -5,7 +5,7 @@ void main() {
   group('Counter', () {
     test('value should start at 0', () {
       expect(Counter().value, 0);
-    });
+    }); //comments
 
     test('value should be incremented', () {
       final counter = Counter();
