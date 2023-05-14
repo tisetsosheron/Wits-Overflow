@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:wits_overflow/Answers.dart';
+import 'package:wits_overflow/MainQuestions.dart';
 import 'package:wits_overflow/fetch_data.dart';
 import 'package:wits_overflow/fetch_questions.dart';
 import 'package:wits_overflow/model/Question.dart';
