@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:wits_overflow/PostAnswers/QuestionId.dart';
 import 'package:wits_overflow/PostAnswers/post_answers.dart';
 import 'package:wits_overflow/homepage.dart';
 import 'package:wits_overflow/read%20data/get_main_dates.dart';
@@ -145,8 +146,12 @@ class CounterScreen extends State<CounterScreenState> {
                           title: getMainQuestion(documentId: docIds[index]),
                           subtitle: getMainDates(documentId: docIds[index]),
                           onTap: () {
+                            print(QuestionId().setId(docIds[index]));
+
                             Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => Answers(),
+                              builder: (context) => Answers(
+                                  questionId:
+                                      QuestionId().setId(docIds[index])),
                             ));
                           },
                         ));
@@ -178,7 +183,7 @@ class CounterScreen extends State<CounterScreenState> {
 
   void Postquestion() async {
     _question.query = _questionController.text;
-    _question.answer = "No answer yet";
+
     _question.created = DateTime.now();
 
     await FirebaseFirestore.instance
