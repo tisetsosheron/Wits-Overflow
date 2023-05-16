@@ -6,8 +6,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:wits_overflow/homepage.dart';
-import 'package:wits_overflow/signin.dart';
+import 'package:wits_overflow/Pages/homepage.dart';
+import 'package:wits_overflow/Pages/signin.dart';
 
 class ProfileEdit extends StatefulWidget {
   const ProfileEdit({Key? key}) : super(key: key);

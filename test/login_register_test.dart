@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:wits_overflow/login_or_register.dart';
-import 'package:wits_overflow/register.dart';
-import 'package:wits_overflow/signin.dart';
+import 'package:wits_overflow/Pages/login_or_register.dart';
+import 'package:wits_overflow/Pages/register.dart';
+import 'package:wits_overflow/Pages/signin.dart';
 
 void main() {
   testWidgets('should show LoginPage when showLogin is true',

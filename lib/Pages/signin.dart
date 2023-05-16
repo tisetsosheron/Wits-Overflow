@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:wits_overflow/homepage.dart';
-import 'package:wits_overflow/register.dart';
+import 'package:wits_overflow/Pages/homepage.dart';
+import 'package:wits_overflow/Pages/register.dart';
 
 import 'ResetPassword.dart';
 
@@ -101,7 +101,6 @@ class _LoginPageState extends State<LoginPage> {
                     height: 15,
                   ),
 
-            
                   const SizedBox(
                     height: 15,
                   ),
@@ -109,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25),
                     child: Container(
-                      //Colour of the boxes for homepage
+                        //Colour of the boxes for homepage
                         decoration: BoxDecoration(
                             color: Colors.grey[200],
                             border: Border.all(color: Colors.white),
@@ -161,7 +160,7 @@ class _LoginPageState extends State<LoginPage> {
                           'Forgot password?',
                           style: TextStyle(color: Colors.blue, fontSize: 17),
                         ),
-                         onTap: resetpassword,
+                        onTap: resetpassword,
                       )
                     ],
                   ),
@@ -238,12 +237,11 @@ class _LoginPageState extends State<LoginPage> {
         ));
   }
 
-   void resetpassword() {
-     Navigator.of(context).push(MaterialPageRoute(
+  void resetpassword() {
+    Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => ResetPassword(),
-     ));
-
-   }
+    ));
+  }
 
   void registerpage() {
     Navigator.of(context).push(MaterialPageRoute(

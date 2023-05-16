@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:wits_overflow/PostAnswers/QuestionId.dart';
 import 'package:wits_overflow/PostAnswers/post_answers.dart';
-import 'package:wits_overflow/homepage.dart';
+import 'package:wits_overflow/Pages/homepage.dart';
 import 'package:wits_overflow/read%20data/get_main_dates.dart';
 import 'package:wits_overflow/read%20data/get_main_questions.dart';
 
 import 'ProfileEdit.dart';
-import 'fetch_questions.dart';
-import 'model/Question.dart';
-import 'view/history_view.dart';
+import '../Widgets/fetch_questions.dart';
+import '../model/Question.dart';
+import '../view/history_view.dart';
 
 class CounterScreenState extends StatefulWidget {
   const CounterScreenState({super.key});

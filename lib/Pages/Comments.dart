@@ -7,37 +7,36 @@ import 'package:wits_overflow/PostAnswers/QuestionId.dart';
 import 'package:wits_overflow/Pages/homepage.dart';
 import 'package:wits_overflow/model/answers.dart';
 import 'package:wits_overflow/read%20data/get_main_answers.dart';
+import 'package:wits_overflow/read%20data/get_main_comments_dates.dart';
 import 'package:wits_overflow/read%20data/get_main_dates.dart';
 import 'package:wits_overflow/read%20data/get_main_questions.dart';
 
-import '../Pages/Comments.dart';
-import '../read data/get_main_answers_dates.dart';
+import '../model/comments.dart';
 import '../read data/get_main_comments.dart';
-import 'CommentsId.dart';
 
-class Answers extends StatefulWidget {
-  final String questionId;
+class Comments extends StatefulWidget {
+  final String commentsId;
 
-  Answers({required this.questionId});
+  Comments({required this.commentsId});
 
   @override
-  State<Answers> createState() => _AnswersState();
+  State<Comments> createState() => _CommentsState();
 }
 
-class _AnswersState extends State<Answers> {
+class _CommentsState extends State<Comments> {
   final String currentUserId = FirebaseAuth.instance.currentUser!.uid;
 
   List<String> docIDs = [];
 
-  answers _answer = answers();
+  comments _comment = comments();
 
-  TextEditingController _answerController = new TextEditingController();
+  TextEditingController __commentController = new TextEditingController();
 
   Future getDocId() async {
     await FirebaseFirestore.instance
-        .collection('mainquestions')
-        .doc(widget.questionId)
-        .collection('answers')
+        .collection('Comments')
+        .doc(widget.commentsId)
+        .collection('comments')
         .orderBy('created', descending: true)
         .get()
         .then((snapshot) => snapshot.docs.forEach((document) {
@@ -51,7 +50,7 @@ class _AnswersState extends State<Answers> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white70,
-        title: Text("Add Answer",
+        title: Text("Add Comment",
             style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
       ),
       body: SafeArea(
@@ -67,9 +66,9 @@ class _AnswersState extends State<Answers> {
                         itemBuilder: (context, index) {
                           return Card(
                               child: ListTile(
-                            title: getMainAnswers(
+                            title: getMainComments(
                               documentId: docIDs[index],
-                              questionId: widget.questionId,
+                              commentId: widget.commentsId,
                             ),
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -94,36 +93,20 @@ class _AnswersState extends State<Answers> {
                                       ),
                                     ),
                                     Text("5         "),
-                                    Center(
-                                      child: Column(
-                                        children: [
-                                          IconButton(
-                                              onPressed: () {
-                                                print(CommentsId()
-                                                    .setId(docIDs[index]));
-                                                Navigator.of(context)
-                                                    .push(MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      Comments(
-                                                          commentsId:
-                                                              CommentsId()
-                                                                  .setId(docIDs[
-                                                                      index])),
-                                                ));
-                                              },
-                                              icon: Icon(Icons
-                                                  .messenger_outline_sharp))
-                                        ],
-                                      ),
-                                    ),
                                   ],
                                 )
                               ],
                             ),
-                            trailing: getMainAnswersDates(
+                            trailing: getMainCommentsDates(
                               documentId: docIDs[index],
-                              questionId: widget.questionId,
+                              commentsId: widget.commentsId,
                             ),
+                            // subtitle: getMainDates(documentId: docIds[index]),
+                            // onTap: () {
+                            //   Navigator.of(context).push(MaterialPageRoute(
+                            //     builder: (context) => Dashboard(),
+                            //   ));
+                            // },
                           ));
                         });
                   }),
@@ -132,7 +115,7 @@ class _AnswersState extends State<Answers> {
               children: <Widget>[
                 Expanded(
                   child: TextField(
-                    controller: _answerController,
+                    controller: __commentController,
                     decoration: InputDecoration(hintText: "Add an answer"),
                   ),
                 ),
@@ -140,7 +123,7 @@ class _AnswersState extends State<Answers> {
                   icon: Icon(Icons.send),
                   tooltip: 'post',
                   onPressed: () {
-                    PostAnswer();
+                    PostComment();
 
                     // DatabaseManager().getUsersList();
                   },
@@ -153,20 +136,20 @@ class _AnswersState extends State<Answers> {
     );
   }
 
-  void PostAnswer() async {
-    _answer.answer = _answerController.text;
+  void PostComment() async {
+    _comment.comment = __commentController.text;
 
-    _answer.created = DateTime.now();
+    _comment.created = DateTime.now();
 
     await FirebaseFirestore.instance
-        .collection("mainquestions")
-        .doc(widget.questionId)
-        .collection('answers')
-        .add(_answer.toJson());
+        .collection("Comments")
+        .doc(widget.commentsId)
+        .collection('comments')
+        .add(_comment.toJson());
 
-    _answerController.text = '';
+    __commentController.text = '';
     Fluttertoast.showToast(
-        msg: "Answer Posted",
+        msg: "Comment Posted",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
         timeInSecForIosWeb: 5,

@@ -1,5 +1,5 @@
 import 'package:test/test.dart';
-import 'package:wits_overflow/counter.dart';
+import 'package:wits_overflow/Pages/counter.dart';
 
 void main() {
   group('Counter', () {

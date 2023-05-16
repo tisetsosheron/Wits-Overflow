@@ -1,14 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:wits_overflow/MainQuestions.dart';
-import 'package:wits_overflow/fetch_data.dart';
-import 'package:wits_overflow/fetch_questions.dart';
+import 'package:wits_overflow/Pages/MainQuestions.dart';
+import 'package:wits_overflow/Widgets/fetch_data.dart';
+import 'package:wits_overflow/Widgets/fetch_questions.dart';
 import 'package:wits_overflow/model/Question.dart';
 import 'package:wits_overflow/view/questions_card.dart';
 import 'package:intl/intl.dart';
 
-import '../fetch_dates.dart';
+import '../Widgets/fetch_dates.dart';
 
 class HistoryView extends StatefulWidget {
   @override

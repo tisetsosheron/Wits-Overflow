@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:wits_overflow/MainQuestions.dart';
-import 'package:wits_overflow/ProfileEdit.dart';
-import 'package:wits_overflow/signin.dart';
+import 'package:wits_overflow/Pages/MainQuestions.dart';
+import 'package:wits_overflow/Pages/ProfileEdit.dart';
+import 'package:wits_overflow/Pages/signin.dart';
 
 class Dashboard extends StatefulWidget {
   @override

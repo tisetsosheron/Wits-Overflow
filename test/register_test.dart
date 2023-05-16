@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:wits_overflow/register.dart';
+import 'package:wits_overflow/Pages/register.dart';
 
 void main() {
   testWidgets('Register widget test', (WidgetTester tester) async {
