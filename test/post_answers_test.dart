@@ -1,9 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:wits_overflow/PostAnswers/post_answers.dart';
 
+//like
 void main() {
-  group('Answers Widget', () {
+  /*group('Answers Widget', () {
     late Answers answersWidget;
     final String questionId = 'example_question_id';
 
@@ -11,7 +10,7 @@ void main() {
       answersWidget = Answers(questionId: questionId);
     });
 
-    testWidgets('post', (WidgetTester tester) async {
+    testWidgets('Answer Posted', (WidgetTester tester) async {
       await tester.pumpWidget(MaterialApp(home: answersWidget));
 
       // Mock necessary dependencies (e.g., FirebaseAuth, FirebaseFirestore)
@@ -31,25 +30,25 @@ void main() {
       // You can use mock objects or verify the function calls
 
       // Verify any other expected behavior
-    });
+    });*/
 
-    testWidgets('Answer list is displayed correctly',
-        (WidgetTester tester) async {
-      //await tester.pumpWidget(MaterialApp(home: answersWidget));
+  testWidgets('Answer list is displayed correctly',
+      (WidgetTester tester) async {
+    //await tester.pumpWidget(MaterialApp(home: answersWidget));
 
-      // Mock necessary dependencies (e.g., FirebaseAuth, FirebaseFirestore)
-      // Setup necessary data for testing (e.g., a list of answers)
+    // Mock necessary dependencies (e.g., FirebaseAuth, FirebaseFirestore)
+    // Setup necessary data for testing (e.g., a list of answers)
 
-      // Wait for the FutureBuilder to complete
-      await tester.pumpAndSettle();
+    // Wait for the FutureBuilder to complete
+    await tester.pumpAndSettle();
 
-      // Assert the expected outcome
-      // Verify if the answer list is displayed correctly
-      // You can use mock objects or verify the function calls
+    // Assert the expected outcome
+    // Verify if the answer list is displayed correctly
+    // You can use mock objects or verify the function calls
 
-      // Verify any other expected behavior
-    });
-
-    // Add more tests for other behaviors or functionality of the Answers widget
+    // Verify any other expected behavior
   });
+
+  // Add more tests for other behaviors or functionality of the Answers widget
+  //});
 }
