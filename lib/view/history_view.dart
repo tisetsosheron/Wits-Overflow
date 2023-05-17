@@ -99,6 +99,7 @@ class _HistoryViewState extends State<HistoryView> {
                     // deleteQuestion('xZEGitW2H8QcoMMCamm8');
                   },
                   child: IconButton(
+                    //
                     icon: Icon(Icons.delete),
                     color: Colors.blue,
                     onPressed: () {
