@@ -14,9 +14,11 @@ class MainPage extends StatelessWidget {
         body: StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
-        if (!snapshot.hasData) {
+        if (snapshot.hasData) {
+        // The user is signed in, so return the dashboard.
           return Dashboard();
         } else {
+        // The user is not signed in, so return the login page.
           return LoginPage(onTap: () {});
         }
       },
