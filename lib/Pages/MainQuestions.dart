@@ -79,10 +79,10 @@ class CounterScreen extends State<CounterScreenState> {
       appBar: AppBar(
         backgroundColor: Colors.white70,
         title: !isSearching
-            ? Text("Add Question",
+            ? const Text("Add Question",
                 style:
                     TextStyle(color: Colors.black, fontWeight: FontWeight.bold))
-            : TextField(
+            : const TextField(
                 decoration: InputDecoration(
                   icon: Icon(Icons.search),
                   hintText: "search question by keyword",
