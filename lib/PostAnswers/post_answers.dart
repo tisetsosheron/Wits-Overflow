@@ -3,16 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:wits_overflow/PostAnswers/QuestionId.dart';
-import 'package:wits_overflow/Pages/homepage.dart';
 import 'package:wits_overflow/model/answers.dart';
 import 'package:wits_overflow/read%20data/get_main_answers.dart';
-import 'package:wits_overflow/read%20data/get_main_dates.dart';
-import 'package:wits_overflow/read%20data/get_main_questions.dart';
 
 import '../Pages/Comments.dart';
 import '../read data/get_main_answers_dates.dart';
-import '../read data/get_main_comments.dart';
 import 'CommentsId.dart';
 
 class Answers extends StatefulWidget {
@@ -25,8 +20,11 @@ class Answers extends StatefulWidget {
 }
 
 class _AnswersState extends State<Answers> {
+  int? selectedAnswerIndex;
   final String currentUserId = FirebaseAuth.instance.currentUser!.uid;
-
+  bool isSearching = false;
+  bool isPressed = false;
+  bool isPresseddislike = false;
   List<String> docIDs = [];
 
   answers _answer = answers();
@@ -45,6 +43,29 @@ class _AnswersState extends State<Answers> {
               docIDs.add(document.reference.id);
             }));
   }
+
+  //im going to use this for the button to increment the number of upvotes and downvotes
+  //initializing counter and creating a counter method
+  int counter = 0;
+
+  void incrementCounter() async {
+    if (selectedAnswerIndex != null) {
+      String docId = docIDs[selectedAnswerIndex!];
+
+      await FirebaseFirestore.instance
+          .collection('mainquestions')
+          .doc(widget.questionId)
+          .collection('answers')
+          .doc(docId)
+          .update({'like': FieldValue.increment(1)});
+
+      setState(() {
+        counter++;
+      });
+    }
+  }
+
+  //int counterr = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -77,23 +98,35 @@ class _AnswersState extends State<Answers> {
                                 Row(
                                   children: [
                                     IconButton(
-                                      onPressed: () {},
                                       icon: Icon(
                                         FontAwesomeIcons.solidThumbsUp,
-                                        color: Colors.grey,
                                         size: 20,
                                       ),
+                                      onPressed: () {
+                                        setState(() {
+                                          selectedAnswerIndex = index;
+                                        });
+                                        incrementCounter();
+                                        isPressed = true;
+                                      },
+                                      color: (isPressed)
+                                          ? Colors.deepOrange
+                                          : Colors.grey,
+                                      tooltip: 'like this answer',
                                     ),
-                                    Text("10"),
+                                    Text("$counter"),
                                     IconButton(
-                                      onPressed: () {},
                                       icon: Icon(
                                         FontAwesomeIcons.solidThumbsDown,
                                         color: Colors.grey,
                                         size: 20,
                                       ),
+                                      onPressed: () {
+                                        //incrementCounterr();
+                                        isPresseddislike = true;
+                                      },
                                     ),
-                                    Text("5         "),
+                                    //Text("$counterr"),
                                     Center(
                                       child: Column(
                                         children: [
