@@ -69,11 +69,11 @@ class _DashboardState extends State<Dashboard> {
               leading: Icon(Icons.logout),
               title: const Text("Logout"),
               onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => LoginPage(
-                    onTap: () {},
-                  ),
-                ));
+                // Navigator.of(context).push(MaterialPageRoute(
+                //   builder: (context) => LoginPage(
+                //     onTap: () {},
+                //   ),
+                // ));
               },
             ),
           ],
