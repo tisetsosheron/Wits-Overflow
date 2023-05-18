@@ -25,6 +25,10 @@ class CounterScreen extends State<CounterScreenState> {
   //document IDs
   List<String> docIds = [];
 
+
+//this method retrieves the document IDs from the "mainquestions" collection in Firestore.
+// It sorts the documents based on the "created" field in descending order and stores the document IDs in a list called docIds.
+// Additionally, it prints the references of each document during the retrieval process.
   Future getDocId() async {
     await FirebaseFirestore.instance
         .collection("mainquestions")
@@ -42,25 +46,15 @@ class CounterScreen extends State<CounterScreenState> {
   bool isPressed = false;
   bool isPresseddislike = false;
 
-  //im going to use this for the button to increment the number of upvotes and downvotes
-  //initializing counter and creating a counter method
-  int counter = 0;
 
-  void incrementCounter() {
-    setState(() {
-      counter++;
-    });
-  }
-
-  int counterr = 0;
-
-  void incrementCounterr() {
-    setState(() {
-      counterr++;
-    });
-  }
-
+//this line of code initializes the usersQuestions list
   List usersQuestionsList = [];
+
+
+//The method FetchDatabaseList() is an asynchronous function that retrieves a list of users' questions from a database
+  // this method fetches a list of users' questions from a database using an asynchronous operation.
+  // If the retrieval is successful, it updates the state variable usersQuestionsList and triggers a UI update.
+  // If the retrieval is unsuccessful or returns null, it prints an error message.
 
   FetchDatabaseList() async {
     dynamic resultant = await DatabaseManager().getUsersList();
@@ -76,6 +70,10 @@ class CounterScreen extends State<CounterScreenState> {
 
   Widget build(BuildContext context) {
     return Scaffold(
+
+
+      //This is the interface of the "Ask questions screen" will all the buttons, textfields and icons needed
+      //its the visuals
       appBar: AppBar(
         backgroundColor: Colors.white70,
         title: !isSearching
@@ -158,6 +156,9 @@ class CounterScreen extends State<CounterScreenState> {
                       });
                 }),
           ),
+
+
+          //This is the where the user type their question and post it
           Row(
             children: <Widget>[
               Expanded(
@@ -180,7 +181,10 @@ class CounterScreen extends State<CounterScreenState> {
       ),
     );
   }
-
+//The Postquestion() method is a function that posts a question to two different collections in Firestore.
+  //this method takes the question entered by the user,
+  //adds the question data to both the user-specific "questions" collection and the general "mainquestions" collection in Firestore.
+  // It also clears the input field and displays a toast message to indicate that the question has been posted.
   void Postquestion() async {
     _question.query = _questionController.text;
 
@@ -205,11 +209,17 @@ class CounterScreen extends State<CounterScreenState> {
         fontSize: 20);
   }
 
+
+// this method is responsible for navigating to the HistoryView screen .
+// It uses the Navigator class to handle the navigation operation and displays the specified widget on the new screen.
   void History() {
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => HistoryView(),
     ));
   }
+
+  //this method checks if the question string is null and returns either an empty string or the original question string.
+  // It provides a way to handle null values and ensure that the method always returns a valid string.
 
   String returnText(String question) {
     if (question == null) {
