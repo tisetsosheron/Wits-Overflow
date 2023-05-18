@@ -7,8 +7,6 @@ import 'package:wits_overflow/PostAnswers/post_answers.dart';
 import 'package:wits_overflow/Pages/homepage.dart';
 import 'package:wits_overflow/read%20data/get_main_dates.dart';
 import 'package:wits_overflow/read%20data/get_main_questions.dart';
-
-import 'ProfileEdit.dart';
 import '../Widgets/fetch_questions.dart';
 import '../model/Question.dart';
 import '../view/history_view.dart';
@@ -24,7 +22,6 @@ class CounterScreen extends State<CounterScreenState> {
   TextEditingController _questionController = TextEditingController();
   //document IDs
   List<String> docIds = [];
-
 
 //this method retrieves the document IDs from the "mainquestions" collection in Firestore.
 // It sorts the documents based on the "created" field in descending order and stores the document IDs in a list called docIds.
@@ -46,10 +43,8 @@ class CounterScreen extends State<CounterScreenState> {
   bool isPressed = false;
   bool isPresseddislike = false;
 
-
 //this line of code initializes the usersQuestions list
   List usersQuestionsList = [];
-
 
 //The method FetchDatabaseList() is an asynchronous function that retrieves a list of users' questions from a database
   // this method fetches a list of users' questions from a database using an asynchronous operation.
@@ -70,8 +65,6 @@ class CounterScreen extends State<CounterScreenState> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-
-
       //This is the interface of the "Ask questions screen" will all the buttons, textfields and icons needed
       //its the visuals
       appBar: AppBar(
@@ -116,7 +109,7 @@ class CounterScreen extends State<CounterScreenState> {
           IconButton(
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => ProfileEdit(),
+                  builder: (context) => Dashboard(),
                 ));
               },
               icon: Icon(Icons.person),
@@ -157,7 +150,6 @@ class CounterScreen extends State<CounterScreenState> {
                 }),
           ),
 
-
           //This is the where the user type their question and post it
           Row(
             children: <Widget>[
@@ -181,6 +173,7 @@ class CounterScreen extends State<CounterScreenState> {
       ),
     );
   }
+
 //The Postquestion() method is a function that posts a question to two different collections in Firestore.
   //this method takes the question entered by the user,
   //adds the question data to both the user-specific "questions" collection and the general "mainquestions" collection in Firestore.
@@ -208,7 +201,6 @@ class CounterScreen extends State<CounterScreenState> {
         textColor: Colors.black,
         fontSize: 20);
   }
-
 
 // this method is responsible for navigating to the HistoryView screen .
 // It uses the Navigator class to handle the navigation operation and displays the specified widget on the new screen.
