@@ -64,10 +64,10 @@ class _ViewQuestionsState extends State<ViewQuestions> {
               icon: Icon(Icons.home),
               color: Colors.blue,
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Dashboard()),
-                );
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(builder: (context) => Dashboard()),
+                // );
               }),
           IconButton(
               onPressed: () {},

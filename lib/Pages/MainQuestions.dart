@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:wits_overflow/Pages/signIn.dart';
 import 'package:wits_overflow/PostAnswers/QuestionId.dart';
 import 'package:wits_overflow/PostAnswers/post_answers.dart';
 import 'package:wits_overflow/Pages/homepage.dart';
@@ -109,7 +110,7 @@ class CounterScreen extends State<CounterScreenState> {
           IconButton(
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => Dashboard(),
+                  builder: (context) => LoginPage(onTap: () {  },),
                 ));
               },
               icon: Icon(Icons.person),

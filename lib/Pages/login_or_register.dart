@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wits_overflow/Pages/homepage.dart';
 import 'package:wits_overflow/Pages/register.dart';
-
+import 'package:wits_overflow/Pages/signin.dart';
 
 class LoginOrRegister extends StatefulWidget {
   const LoginOrRegister({super.key, required bool showLogin});
@@ -23,8 +23,8 @@ class _LoginOrRegisterState extends State<LoginOrRegister> {
   Widget build(BuildContext context) {
     //if user is registered show login page
     if (showLogin) {
-      return Dashboard(
-       // onTap: togglePages,
+      return LoginPage(
+        onTap: togglePages,
       );
       //else  show register page
     } else {
