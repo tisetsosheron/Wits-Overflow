@@ -39,6 +39,9 @@ dependencies:
   
   flutter_emoji: ">= 2.0.0"
 
+  firebase_auth_mocks: ^0.11.0
+
+  mock_cloud_firestore: ^0.0.20
 
 
 
