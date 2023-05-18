@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wits_overflow/Pages/homepage.dart';
+import 'package:wits_overflow/Pages/signin.dart';
 
 
 //this is the authorization page
@@ -16,10 +17,10 @@ class MainPage extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           // The user is signed in, so return the dashboard.
-          return Dashboard();
+          return LoginPage(onTap: () {  },);
         } else {
           // The user is not signed in, so return the login page.
-          return Dashboard();
+          return LoginPage(onTap: () {  },);
         }
       },
     ));
