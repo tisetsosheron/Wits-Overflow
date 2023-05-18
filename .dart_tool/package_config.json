@@ -655,7 +655,12 @@
       "packageUri": "lib/",
       "languageVersion": "2.19"
     }
+<<<<<<< HEAD
+  ],
+  "generated": "2023-05-18T07:12:07.269907Z",
+=======
 
+>>>>>>> 5655d15d5c68460638055f89518df080b42209db
   "generator": "pub",
   "generatorVersion": "2.19.5"
 }
