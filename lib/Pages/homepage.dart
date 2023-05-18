@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wits_overflow/Pages/MainQuestions.dart';
-import 'package:wits_overflow/Pages/ProfileEdit.dart';
 import 'package:wits_overflow/Pages/signin.dart';
 
 class Dashboard extends StatefulWidget {
@@ -18,11 +17,11 @@ class _DashboardState extends State<Dashboard> {
     ));
   }
 
-  void toprofile() {
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => ProfileEdit(),
-    ));
-  }
+  // void toprofile() {
+  //   Navigator.of(context).push(MaterialPageRoute(
+  //     builder: (context) => ProfileEdit(),
+  //   ));
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -47,9 +46,9 @@ class _DashboardState extends State<Dashboard> {
                 user.email!,
                 style: const TextStyle(color: Colors.grey),
               ),
-              onTap: () {
-                toprofile();
-              },
+              // onTap: () {
+              //   toprofile();
+              // },
             ),
             ListTile(
               leading: Icon(Icons.dashboard),
