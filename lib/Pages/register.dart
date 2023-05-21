@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:wits_overflow/Pages/signin.dart';
+
 
 enum rolesEnum { Moderator, RegularUser }
 
@@ -40,11 +40,11 @@ class _RegisterState extends State<Register> {
             backgroundColor: Colors.blue,
             textColor: Colors.white,
             fontSize: 15);
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => LoginPage(
-            onTap: () {},
-          ),
-        ));
+        // Navigator.of(context).push(MaterialPageRoute(
+        //   builder: (context) => LoginPage(
+        //     onTap: () {},
+        //   ),
+        // ));
       } on FirebaseAuthException catch (e) {
         if (e.code == "invalid-email") {
           //Incorrect Email Format
@@ -344,9 +344,9 @@ class _RegisterState extends State<Register> {
         ));
   }
 
-  void signin() {
-    Navigator.of(context).push(
-      MaterialPageRoute(builder: (context) => LoginPage(onTap: () {})),
-    );
-  }
+   void signin() {
+  //   Navigator.of(context).push(
+  //     MaterialPageRoute(builder: (context) => LoginPage(onTap: () {})),
+  //   );
+   }
 }

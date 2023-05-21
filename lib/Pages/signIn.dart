@@ -32,9 +32,9 @@ class _LoginPageState extends State<LoginPage> {
             email: _emailController.text.trim(),
             password: _passwordController.text.trim());
         Navigator.pop(context);
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => Dashboard(),
-        ));
+        // Navigator.of(context).push(MaterialPageRoute(
+        //   builder: (context) => Dashboard(),
+        // ));
       }
     } on FirebaseAuthException catch (e) {
       Navigator.pop(context);

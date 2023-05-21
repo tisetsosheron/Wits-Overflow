@@ -33,6 +33,12 @@ class _AnswersState extends State<Answers> {
 
   TextEditingController _answerController = new TextEditingController();
 
+
+
+
+  //The method getDocId() is an asynchronous function that retrieves the document IDs from the Firestore collection.
+  //this method retrieves the document IDs of the answers subcollection within the specified main question document in Firestore.
+  // It sorts the answers based on the "created" field in descending order and stores the document IDs in a list called docIDs.
   Future getDocId() async {
     await FirebaseFirestore.instance
         .collection('mainquestions')
@@ -58,15 +64,22 @@ class _AnswersState extends State<Answers> {
         child: Column(
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
+
+            //This is basically the interface of the "post answers" page will all the buttons that the user will use
+            //the list view if for displaying the answers retrieved from the database
             Expanded(
               child: FutureBuilder(
                   future: getDocId(),
                   builder: (context, snapshot) {
+
+                    //This basically create the list view for displaying the answers on the database
                     return ListView.builder(
                         itemCount: docIDs.length,
                         itemBuilder: (context, index) {
                           return Card(
                               child: ListTile(
+
+                                //This code basically display tha answer posted by the user on the list tile
                             title: getMainAnswers(
                               documentId: docIDs[index],
                               questionId: widget.questionId,
@@ -120,6 +133,9 @@ class _AnswersState extends State<Answers> {
                                 )
                               ],
                             ),
+
+                            //the getMainAnswersDate is a method that get the date that the answer was added on
+                                // this code is for displaying the date of an answer of the bottom right side of the list tile
                             trailing: getMainAnswersDates(
                               documentId: docIDs[index],
                               questionId: widget.questionId,
@@ -128,6 +144,8 @@ class _AnswersState extends State<Answers> {
                         });
                   }),
             ),
+
+            //This is the where the user type their answer and post it
             Row(
               children: <Widget>[
                 Expanded(
@@ -152,6 +170,9 @@ class _AnswersState extends State<Answers> {
       ),
     );
   }
+
+  //This method posts the answer and the date the answer was addedon firebase database under the "answers" collection
+  //The answer is added for the corresponding question
 
   void PostAnswer() async {
     _answer.answer = _answerController.text;
