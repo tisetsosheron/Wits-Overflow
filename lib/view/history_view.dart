@@ -83,6 +83,7 @@ class _HistoryViewState extends State<HistoryView> {
         ],
       ),
       body: SafeArea(
+          //QuestionBox
           child: FutureBuilder(
         future: getDocId(),
         builder: (context, snapshot) {
