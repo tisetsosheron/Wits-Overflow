@@ -95,14 +95,15 @@ class _HistoryViewState extends State<HistoryView> {
                   onTap: () async {
                     Tooltip:
                     'delete question';
-                    deleteQuestion('RVzsIzGMs53ZG29v62jR');
+                    deleteQuestion('N8vaMTayoxkgA1RYvHl3');
                     // deleteQuestion('xZEGitW2H8QcoMMCamm8');
                   },
                   child: IconButton(
+                    //
                     icon: Icon(Icons.delete),
                     color: Colors.blue,
                     onPressed: () {
-                      deleteQuestion('RVzsIzGMs53ZG29v62jR');
+                      deleteQuestion('N8vaMTayoxkgA1RYvHl3');
                       // deleteQuestion('xZEGitW2H8QcoMMCamm8');
                     },
                     tooltip: 'delete question',
