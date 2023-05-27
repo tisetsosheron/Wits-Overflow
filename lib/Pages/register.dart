@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -24,6 +25,7 @@ class _RegisterState extends State<Register> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+  final _UsernameController= TextEditingController();
 
   Future Register() async {
     if (_passwordController.text.trim() ==
@@ -64,10 +66,36 @@ class _RegisterState extends State<Register> {
           );
         }
       }
-    } else {
+      //add details
+      AddDetails(
+          _UsernameController.text.trim(),
+          _emailController.text.trim(),
+          _rolesEnum.toString().trim(),
+
+      );
+    }
+    else {
       WrongConfirmPassword();
     }
   }
+
+
+  // this function is responsible for adding user details (s username, email, and role) to a Firestore collection called "registeredUsers"
+  Future AddDetails(String Username, String email, rolesEnum) async{
+   // FirebaseFirestore firebasefirestore= FirebaseFirestore.instance;
+    CollectionReference ref= FirebaseFirestore.instance.collection('registeredUsers');
+    ref.doc(FirebaseAuth.instance.currentUser?.uid).set({
+      'username':Username,
+      'role': rolesEnum,
+      'email address':email,
+    });
+
+    // navigating to a LoginPage in the app
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context)=>LoginPage(onTap: () {  },)));
+
+  }
+
 
   void WrongConfirmPassword() {
     showDialog(
@@ -107,6 +135,8 @@ class _RegisterState extends State<Register> {
     _emailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
+    _UsernameController.dispose();
+    //_rolesEnum.dispose();
     super.dispose();
   }
 
@@ -136,6 +166,31 @@ class _RegisterState extends State<Register> {
                   const SizedBox(
                     height: 20,
                   ),
+
+
+
+                  //username textfield
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25),
+                    child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.grey[200],
+                            border: Border.all(color: Colors.white),
+                            borderRadius: BorderRadius.circular(12)),
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 20.0),
+                          child: TextField(
+                            controller: _UsernameController,
+                            decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'username'),
+                          ),
+                        )),
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+
 
                   //email textfield
                   Padding(

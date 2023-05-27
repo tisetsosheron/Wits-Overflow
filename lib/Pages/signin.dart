@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wits_overflow/Pages/homepage.dart';
@@ -17,6 +18,43 @@ class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
+
+//This function is responsible for routing the user to different pages based on their role in the database.
+
+
+  void route() {
+    User? user = FirebaseAuth.instance.currentUser;
+    FirebaseFirestore.instance.collection('registeredUsers')
+        .doc(user!.uid)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+
+        //If the role is moderator, it navigates to the moderator home page
+        if (documentSnapshot.get('role') == "rolesEnum.Moderator") {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>  const ResetPassword(),// will change this when we have the moderator homepage
+            ),
+          );
+        }else{
+          ////If the role is regular page, it navigates to the regular user dashboard
+
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>  Dashboard(),
+            ),
+          );
+        }
+      } else {
+        print('Document does not exist on the database');
+      }
+    });
+  }
+
+
   Future signIn() async {
     showDialog(
         context: context,
@@ -27,13 +65,13 @@ class _LoginPageState extends State<LoginPage> {
         });
 
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: _emailController.text.trim(),
-          password: _passwordController.text.trim());
-      Navigator.pop(context);
-      Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => Dashboard(),
-      ));
+      if (mounted) {
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+            email: _emailController.text.trim(),
+            password: _passwordController.text.trim());
+        route();
+
+      }
     } on FirebaseAuthException catch (e) {
       Navigator.pop(context);
 
