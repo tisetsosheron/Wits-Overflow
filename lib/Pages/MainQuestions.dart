@@ -8,6 +8,7 @@ import 'package:wits_overflow/Pages/homepage.dart';
 import 'package:wits_overflow/read%20data/get_main_dates.dart';
 import 'package:wits_overflow/read%20data/get_main_questions.dart';
 
+import '../components/question_post.dart';
 import 'ProfileEdit.dart';
 import '../Widgets/fetch_questions.dart';
 import '../model/Question.dart';
@@ -22,10 +23,12 @@ class CounterScreenState extends StatefulWidget {
 
 class CounterScreen extends State<CounterScreenState> {
   TextEditingController _questionController = TextEditingController();
+  final user = FirebaseAuth.instance.currentUser!;
   //document IDs
   List<String> docIds = [];
 
   Future getDocId() async {
+    docIds.clear();
     await FirebaseFirestore.instance
         .collection("mainquestions")
         .orderBy('created', descending: true)
@@ -34,6 +37,26 @@ class CounterScreen extends State<CounterScreenState> {
               print(document.reference);
               docIds.add(document.reference.id);
             }));
+  }
+
+  String getUserName() {
+    User? user = FirebaseAuth.instance.currentUser;
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(user!.uid)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        //gets document for current user
+        if (documentSnapshot.get('username') != null) {
+          //gets current user's username
+          return documentSnapshot.get('username').toString().trim();
+        }
+      } else {
+        print('Document does not exist on the database');
+      }
+    });
+    return "Anonymous";
   }
 
   Question _question = Question();
@@ -131,78 +154,84 @@ class CounterScreen extends State<CounterScreenState> {
               color: Colors.black)
         ],
       ),
-      body: Column(
-        mainAxisSize: MainAxisSize.max,
-        children: <Widget>[
-          Expanded(
-            child: FutureBuilder(
-                future: getDocId(),
-                builder: (context, snapshot) {
-                  return ListView.builder(
-                      itemCount: docIds.length,
-                      itemBuilder: (context, index) {
-                        return Card(
-                            child: ListTile(
-                          title: getMainQuestion(documentId: docIds[index]),
-                          subtitle: getMainDates(documentId: docIds[index]),
-                          onTap: () {
-                            print(QuestionId().setId(docIds[index]));
-
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => Answers(
-                                  questionId:
-                                      QuestionId().setId(docIds[index])),
-                            ));
+      body: Container(
+        color: Color.fromARGB(255, 185, 184, 184),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            Expanded(
+                child: StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection('mainquestions')
+                        .orderBy("created", descending: true)
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return ListView.builder(
+                          itemCount: snapshot.data!.docs.length,
+                          itemBuilder: (context, index) {
+                            final mainQuestion = snapshot.data!.docs[index];
+                            return QuestionPost(
+                              question: mainQuestion['query'],
+                              user: mainQuestion['username'],
+                              questionId: mainQuestion.id,
+                            );
                           },
-                        ));
-                      });
-                }),
-          ),
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: TextField(
-                  controller: _questionController,
-                  decoration: InputDecoration(hintText: "Ask a question"),
+                        );
+                      } else if (snapshot.hasError) {
+                        return Center(child: Text("Error:${snapshot.error}"));
+                      }
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    })),
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: TextField(
+                    controller: _questionController,
+                    decoration: InputDecoration(hintText: "Ask a question"),
+                  ),
                 ),
-              ),
-              IconButton(
-                icon: Icon(Icons.send),
-                tooltip: 'post',
-                onPressed: () {
-                  Postquestion();
-                  // DatabaseManager().getUsersList();
-                },
-              )
-            ],
-          )
-        ],
+                IconButton(
+                  icon: Icon(Icons.send),
+                  tooltip: 'post',
+                  onPressed: () {
+                    Postquestion();
+                    // DatabaseManager().getUsersList();
+                  },
+                )
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
 
   void Postquestion() async {
     _question.query = _questionController.text;
-
+    _question.username = getUserName();
     _question.created = DateTime.now();
-
-    await FirebaseFirestore.instance
-        .collection("users")
-        .doc(FirebaseAuth.instance.currentUser?.uid)
-        .collection('questions')
-        .add(_question.toJson());
-    await FirebaseFirestore.instance
-        .collection("mainquestions")
-        .add(_question.toJson());
-    _questionController.text = '';
-    Fluttertoast.showToast(
-        msg: "Question Posted.Click on the history icon to view",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 5,
-        backgroundColor: Colors.grey,
-        textColor: Colors.black,
-        fontSize: 20);
+    if (_questionController.text.isNotEmpty) {
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(FirebaseAuth.instance.currentUser?.uid)
+          .collection('questions')
+          .add(_question.toJson());
+      await FirebaseFirestore.instance
+          .collection("mainquestions")
+          .add(_question.toJson());
+      _questionController.text = '';
+      Fluttertoast.showToast(
+          msg: "Question Posted.Click on the history icon to view",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 5,
+          backgroundColor: Colors.grey,
+          textColor: Colors.black,
+          fontSize: 20);
+    }
   }
 
   void History() {

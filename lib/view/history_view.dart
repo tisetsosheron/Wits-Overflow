@@ -16,6 +16,7 @@ class _HistoryViewState extends State<HistoryView> {
   List<String> docIDs = [];
 
   Future getDocId() async {
+    docIDs.clear();
     await FirebaseFirestore.instance
         .collection('users')
         .doc(FirebaseAuth.instance.currentUser?.uid)

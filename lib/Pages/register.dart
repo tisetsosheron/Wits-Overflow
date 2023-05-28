@@ -25,7 +25,7 @@ class _RegisterState extends State<Register> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
-  final _UsernameController= TextEditingController();
+  final _UsernameController = TextEditingController();
 
   Future Register() async {
     if (_passwordController.text.trim() ==
@@ -68,34 +68,33 @@ class _RegisterState extends State<Register> {
       }
       //add details
       AddDetails(
-          _UsernameController.text.trim(),
-          _emailController.text.trim(),
-          _rolesEnum.toString().trim(),
-
+        _UsernameController.text.trim(),
+        _emailController.text.trim(),
+        _rolesEnum.toString().trim(),
       );
-    }
-    else {
+    } else {
       WrongConfirmPassword();
     }
   }
 
-
   // this function is responsible for adding user details (s username, email, and role) to a Firestore collection called "registeredUsers"
-  Future AddDetails(String Username, String email, rolesEnum) async{
-   // FirebaseFirestore firebasefirestore= FirebaseFirestore.instance;
-    CollectionReference ref= FirebaseFirestore.instance.collection('registeredUsers');
+  Future AddDetails(String Username, String email, rolesEnum) async {
+    // FirebaseFirestore firebasefirestore= FirebaseFirestore.instance;
+    CollectionReference ref = FirebaseFirestore.instance.collection('users');
     ref.doc(FirebaseAuth.instance.currentUser?.uid).set({
-      'username':Username,
+      'username': Username,
       'role': rolesEnum,
-      'email address':email,
+      'email address': email,
     });
 
     // navigating to a LoginPage in the app
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context)=>LoginPage(onTap: () {  },)));
-
+        context,
+        MaterialPageRoute(
+            builder: (context) => LoginPage(
+                  onTap: () {},
+                )));
   }
-
 
   void WrongConfirmPassword() {
     showDialog(
@@ -167,8 +166,6 @@ class _RegisterState extends State<Register> {
                     height: 20,
                   ),
 
-
-
                   //username textfield
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -182,15 +179,13 @@ class _RegisterState extends State<Register> {
                           child: TextField(
                             controller: _UsernameController,
                             decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'username'),
+                                border: InputBorder.none, hintText: 'username'),
                           ),
                         )),
                   ),
                   const SizedBox(
                     height: 15,
                   ),
-
 
                   //email textfield
                   Padding(

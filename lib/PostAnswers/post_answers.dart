@@ -7,6 +7,8 @@ import 'package:wits_overflow/model/answers.dart';
 import 'package:wits_overflow/read%20data/get_main_answers.dart';
 
 import '../Pages/Comments.dart';
+import '../components/answer_post.dart';
+import '../components/question_post.dart';
 import '../read data/get_main_answers_dates.dart';
 import 'CommentsId.dart';
 
@@ -32,6 +34,7 @@ class _AnswersState extends State<Answers> {
   TextEditingController _answerController = new TextEditingController();
 
   Future getDocId() async {
+    docIDs.clear();
     await FirebaseFirestore.instance
         .collection('mainquestions')
         .doc(widget.questionId)
@@ -44,28 +47,26 @@ class _AnswersState extends State<Answers> {
             }));
   }
 
-  //im going to use this for the button to increment the number of upvotes and downvotes
-  //initializing counter and creating a counter method
-  int counter = 0;
-
-  void incrementCounter() async {
-    if (selectedAnswerIndex != null) {
-      String docId = docIDs[selectedAnswerIndex!];
-
-      await FirebaseFirestore.instance
-          .collection('mainquestions')
-          .doc(widget.questionId)
-          .collection('answers')
-          .doc(docId)
-          .update({'like': FieldValue.increment(1)});
-
-      setState(() {
-        counter++;
-      });
-    }
+  //get username of the person answering
+  String getUserName() {
+    User? user = FirebaseAuth.instance.currentUser;
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(user!.uid)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        //gets document for current user
+        if (documentSnapshot.get('username') != null) {
+          //gets current user's username
+          return documentSnapshot.get('username').toString().trim();
+        }
+      } else {
+        print('Document does not exist on the database');
+      }
+    });
+    return "Anonymous";
   }
-
-  //int counterr = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -76,111 +77,65 @@ class _AnswersState extends State<Answers> {
             style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
       ),
       body: SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            Expanded(
-              child: FutureBuilder(
-                  future: getDocId(),
-                  builder: (context, snapshot) {
-                    return ListView.builder(
-                        itemCount: docIDs.length,
-                        itemBuilder: (context, index) {
-                          return Card(
-                              child: ListTile(
-                            title: getMainAnswers(
-                              documentId: docIDs[index],
-                              questionId: widget.questionId,
-                            ),
-                            subtitle: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    IconButton(
-                                      icon: Icon(
-                                        FontAwesomeIcons.solidThumbsUp,
-                                        size: 20,
-                                      ),
-                                      onPressed: () {
-                                        setState(() {
-                                          selectedAnswerIndex = index;
-                                        });
-                                        incrementCounter();
-                                        isPressed = true;
-                                      },
-                                      color: (isPressed)
-                                          ? Colors.deepOrange
-                                          : Colors.grey,
-                                      tooltip: 'like this answer',
-                                    ),
-                                    Text("$counter"),
-                                    IconButton(
-                                      icon: Icon(
-                                        FontAwesomeIcons.solidThumbsDown,
-                                        color: Colors.grey,
-                                        size: 20,
-                                      ),
-                                      onPressed: () {
-                                        //incrementCounterr();
-                                        isPresseddislike = true;
-                                      },
-                                    ),
-                                    //Text("$counterr"),
-                                    Center(
-                                      child: Column(
-                                        children: [
-                                          IconButton(
-                                              onPressed: () {
-                                                print(CommentsId()
-                                                    .setId(docIDs[index]));
-                                                Navigator.of(context)
-                                                    .push(MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      Comments(
-                                                          commentsId:
-                                                              CommentsId()
-                                                                  .setId(docIDs[
-                                                                      index])),
-                                                ));
-                                              },
-                                              icon: Icon(Icons
-                                                  .messenger_outline_sharp))
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                            trailing: getMainAnswersDates(
-                              documentId: docIDs[index],
-                              questionId: widget.questionId,
-                            ),
-                          ));
-                        });
-                  }),
-            ),
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: TextField(
-                    controller: _answerController,
-                    decoration: InputDecoration(hintText: "Add an answer"),
+        child: Container(
+          color: Color.fromARGB(255, 185, 184, 184),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              Expanded(
+                  child: StreamBuilder<QuerySnapshot>(
+                      stream: FirebaseFirestore.instance
+                          .collection('mainquestions')
+                          .doc(widget.questionId)
+                          .collection('answers')
+                          .orderBy("created", descending: true)
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return ListView.builder(
+                            itemCount: snapshot.data!.docs.length,
+                            itemBuilder: (context, index) {
+                              final mainAnswer = snapshot.data!.docs[index];
+                              return AnswerPost(
+                                answer: mainAnswer['answer'],
+                                user: mainAnswer['username'],
+                                answerId: mainAnswer.id,
+                                likes: List<String>.from(
+                                    mainAnswer['Likes'] ?? []),
+                                dislikes: List<String>.from(
+                                    mainAnswer['Dislikes'] ?? []),
+                                question_id: widget.questionId,
+                              );
+                            },
+                          );
+                        } else if (snapshot.hasError) {
+                          return Center(child: Text("Error:${snapshot.error}"));
+                        }
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      })),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: TextField(
+                      controller: _answerController,
+                      decoration: InputDecoration(hintText: "Add an answer"),
+                    ),
                   ),
-                ),
-                IconButton(
-                  icon: Icon(Icons.send),
-                  tooltip: 'post',
-                  onPressed: () {
-                    PostAnswer();
+                  IconButton(
+                    icon: Icon(Icons.send),
+                    tooltip: 'post',
+                    onPressed: () {
+                      PostAnswer();
 
-                    // DatabaseManager().getUsersList();
-                  },
-                )
-              ],
-            )
-          ],
+                      // DatabaseManager().getUsersList();
+                    },
+                  )
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -188,23 +143,26 @@ class _AnswersState extends State<Answers> {
 
   void PostAnswer() async {
     _answer.answer = _answerController.text;
-
+    _answer.username = getUserName();
     _answer.created = DateTime.now();
+    _answer.Likes = [];
+    _answer.Dislikes = [];
+    if (_answerController.text.isNotEmpty) {
+      await FirebaseFirestore.instance
+          .collection("mainquestions")
+          .doc(widget.questionId)
+          .collection('answers')
+          .add(_answer.toJson());
 
-    await FirebaseFirestore.instance
-        .collection("mainquestions")
-        .doc(widget.questionId)
-        .collection('answers')
-        .add(_answer.toJson());
-
-    _answerController.text = '';
-    Fluttertoast.showToast(
-        msg: "Answer Posted",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 5,
-        backgroundColor: Colors.grey,
-        textColor: Colors.black,
-        fontSize: 20);
+      _answerController.text = '';
+      Fluttertoast.showToast(
+          msg: "Answer Posted",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 5,
+          backgroundColor: Colors.grey,
+          textColor: Colors.black,
+          fontSize: 20);
+    }
   }
 }

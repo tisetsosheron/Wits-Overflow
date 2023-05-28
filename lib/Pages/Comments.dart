@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:wits_overflow/PostAnswers/QuestionId.dart';
 import 'package:wits_overflow/Pages/homepage.dart';
+import 'package:wits_overflow/components/comment_post.dart';
 import 'package:wits_overflow/model/answers.dart';
 import 'package:wits_overflow/read%20data/get_main_answers.dart';
 import 'package:wits_overflow/read%20data/get_main_comments_dates.dart';
@@ -15,9 +16,10 @@ import '../model/comments.dart';
 import '../read data/get_main_comments.dart';
 
 class Comments extends StatefulWidget {
-  final String commentsId;
+  final String Question_Id;
+  final String Answer_id;
 
-  Comments({required this.commentsId});
+  Comments({required this.Question_Id, required this.Answer_id});
 
   @override
   State<Comments> createState() => _CommentsState();
@@ -32,19 +34,6 @@ class _CommentsState extends State<Comments> {
 
   TextEditingController __commentController = new TextEditingController();
 
-  Future getDocId() async {
-    await FirebaseFirestore.instance
-        .collection('Comments')
-        .doc(widget.commentsId)
-        .collection('comments')
-        .orderBy('created', descending: true)
-        .get()
-        .then((snapshot) => snapshot.docs.forEach((document) {
-              print(document.reference);
-              docIDs.add(document.reference.id);
-            }));
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,107 +43,115 @@ class _CommentsState extends State<Comments> {
             style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
       ),
       body: SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            Expanded(
-              child: FutureBuilder(
-                  future: getDocId(),
-                  builder: (context, snapshot) {
-                    return ListView.builder(
-                        itemCount: docIDs.length,
-                        itemBuilder: (context, index) {
-                          return Card(
-                              child: ListTile(
-                            title: getMainComments(
-                              documentId: docIDs[index],
-                              commentId: widget.commentsId,
-                            ),
-                            subtitle: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    IconButton(
-                                      onPressed: () {},
-                                      icon: Icon(
-                                        FontAwesomeIcons.solidThumbsUp,
-                                        color: Colors.grey,
-                                        size: 20,
-                                      ),
-                                    ),
-                                    Text("10"),
-                                    IconButton(
-                                      onPressed: () {},
-                                      icon: Icon(
-                                        FontAwesomeIcons.solidThumbsDown,
-                                        color: Colors.grey,
-                                        size: 20,
-                                      ),
-                                    ),
-                                    Text("5         "),
-                                  ],
-                                )
-                              ],
-                            ),
-                            trailing: getMainCommentsDates(
-                              documentId: docIDs[index],
-                              commentsId: widget.commentsId,
-                            ),
-                            // subtitle: getMainDates(documentId: docIds[index]),
-                            // onTap: () {
-                            //   Navigator.of(context).push(MaterialPageRoute(
-                            //     builder: (context) => Dashboard(),
-                            //   ));
-                            // },
-                          ));
-                        });
-                  }),
-            ),
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: TextField(
-                    controller: __commentController,
-                    decoration: InputDecoration(hintText: "Add an answer"),
+        child: Container(
+          color: Color.fromARGB(255, 185, 184, 184),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              Expanded(
+                  child: StreamBuilder<QuerySnapshot>(
+                      stream: FirebaseFirestore.instance
+                          .collection('mainquestions')
+                          .doc(widget.Question_Id)
+                          .collection('answers')
+                          .doc(widget.Answer_id)
+                          .collection("comments")
+                          .orderBy("created", descending: true)
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return ListView.builder(
+                              itemCount: snapshot.data!.docs.length,
+                              itemBuilder: (context, index) {
+                                final mainComment = snapshot.data!.docs[index];
+                                return CommentPost(
+                                    comment: mainComment['comment'],
+                                    user: mainComment['username'],
+                                    likes: List<String>.from(
+                                        mainComment['Likes'] ?? []),
+                                    dislikes: List<String>.from(
+                                        mainComment['Dislikes'] ?? []),
+                                    answer_id: widget.Answer_id,
+                                    Question_id: widget.Question_Id,
+                                    comment_id: mainComment.id);
+                              });
+                        } else if (snapshot.hasError) {
+                          return Center(child: Text("Error:${snapshot.error}"));
+                        }
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      })),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: TextField(
+                      controller: __commentController,
+                      decoration: InputDecoration(hintText: "Add an answer"),
+                    ),
                   ),
-                ),
-                IconButton(
-                  icon: Icon(Icons.send),
-                  tooltip: 'post',
-                  onPressed: () {
-                    PostComment();
+                  IconButton(
+                    icon: Icon(Icons.send),
+                    tooltip: 'post',
+                    onPressed: () {
+                      PostComment();
 
-                    // DatabaseManager().getUsersList();
-                  },
-                )
-              ],
-            )
-          ],
+                      // DatabaseManager().getUsersList();
+                    },
+                  )
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );
   }
 
+  String getUserName() {
+    User? user = FirebaseAuth.instance.currentUser;
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(user!.uid)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        //gets document for current user
+        if (documentSnapshot.get('username') != null) {
+          //gets current user's username
+          return documentSnapshot.get('username').toString().trim();
+        }
+      } else {
+        print('Document does not exist on the database');
+      }
+    });
+    return "Anonymous";
+  }
+
   void PostComment() async {
     _comment.comment = __commentController.text;
-
+    _comment.Likes = [];
+    _comment.Dislikes = [];
     _comment.created = DateTime.now();
+    _comment.username = getUserName();
+    if (__commentController.text.isNotEmpty) {
+      await FirebaseFirestore.instance
+          .collection("mainquestions")
+          .doc(widget.Question_Id)
+          .collection('answers')
+          .doc(widget.Answer_id)
+          .collection('comments')
+          .add(_comment.toJson());
 
-    await FirebaseFirestore.instance
-        .collection("Comments")
-        .doc(widget.commentsId)
-        .collection('comments')
-        .add(_comment.toJson());
-
-    __commentController.text = '';
-    Fluttertoast.showToast(
-        msg: "Comment Posted",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 5,
-        backgroundColor: Colors.grey,
-        textColor: Colors.black,
-        fontSize: 20);
+      __commentController.text = '';
+      Fluttertoast.showToast(
+          msg: "Comment Posted",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 5,
+          backgroundColor: Colors.grey,
+          textColor: Colors.black,
+          fontSize: 20);
+    }
   }
 }
