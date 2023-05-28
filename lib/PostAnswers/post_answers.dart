@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:wits_overflow/model/answers.dart';
 import 'package:wits_overflow/read%20data/get_main_answers.dart';
 
@@ -14,8 +15,9 @@ import 'CommentsId.dart';
 
 class Answers extends StatefulWidget {
   final String questionId;
+  final String username;
 
-  Answers({required this.questionId});
+  Answers({required this.questionId, required this.username});
 
   @override
   State<Answers> createState() => _AnswersState();
@@ -48,24 +50,19 @@ class _AnswersState extends State<Answers> {
   }
 
   //get username of the person answering
-  String getUserName() {
-    User? user = FirebaseAuth.instance.currentUser;
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(user!.uid)
-        .get()
-        .then((DocumentSnapshot documentSnapshot) {
-      if (documentSnapshot.exists) {
-        //gets document for current user
-        if (documentSnapshot.get('username') != null) {
-          //gets current user's username
-          return documentSnapshot.get('username').toString().trim();
-        }
-      } else {
-        print('Document does not exist on the database');
-      }
-    });
-    return "Anonymous";
+  Future getUserName() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .get()
+          .then((ds) {
+        _answer.username = ds['username'];
+      }).catchError((e) {
+        print(e);
+      });
+    }
   }
 
   @override
@@ -105,6 +102,10 @@ class _AnswersState extends State<Answers> {
                                 dislikes: List<String>.from(
                                     mainAnswer['Dislikes'] ?? []),
                                 question_id: widget.questionId,
+                                date: DateFormat('MM/dd/yyyy')
+                                    .format(mainAnswer['created'].toDate()!)
+                                    .toString(),
+                                CurrentUser: widget.username,
                               );
                             },
                           );
@@ -141,12 +142,13 @@ class _AnswersState extends State<Answers> {
     );
   }
 
-  void PostAnswer() async {
+  Future PostAnswer() async {
     _answer.answer = _answerController.text;
-    _answer.username = getUserName();
+    _answer.username = widget.username;
     _answer.created = DateTime.now();
     _answer.Likes = [];
     _answer.Dislikes = [];
+
     if (_answerController.text.isNotEmpty) {
       await FirebaseFirestore.instance
           .collection("mainquestions")

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:wits_overflow/PostAnswers/QuestionId.dart';
 import 'package:wits_overflow/PostAnswers/post_answers.dart';
 import 'package:wits_overflow/Pages/homepage.dart';
@@ -15,7 +16,9 @@ import '../model/Question.dart';
 import '../view/history_view.dart';
 
 class CounterScreenState extends StatefulWidget {
-  const CounterScreenState({super.key});
+  final String currentUser;
+
+  const CounterScreenState({super.key, required this.currentUser});
 
   @override
   CounterScreen createState() => CounterScreen();
@@ -23,7 +26,7 @@ class CounterScreenState extends StatefulWidget {
 
 class CounterScreen extends State<CounterScreenState> {
   TextEditingController _questionController = TextEditingController();
-  final user = FirebaseAuth.instance.currentUser!;
+  // final user = FirebaseAuth.instance.currentUser!;
   //document IDs
   List<String> docIds = [];
 
@@ -39,24 +42,19 @@ class CounterScreen extends State<CounterScreenState> {
             }));
   }
 
-  String getUserName() {
-    User? user = FirebaseAuth.instance.currentUser;
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(user!.uid)
-        .get()
-        .then((DocumentSnapshot documentSnapshot) {
-      if (documentSnapshot.exists) {
-        //gets document for current user
-        if (documentSnapshot.get('username') != null) {
-          //gets current user's username
-          return documentSnapshot.get('username').toString().trim();
-        }
-      } else {
-        print('Document does not exist on the database');
-      }
-    });
-    return "Anonymous";
+  getUserName() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .get()
+          .then((ds) {
+        CounterScreenState(currentUser: ds['username']);
+      }).catchError((e) {
+        print(e);
+      });
+    }
   }
 
   Question _question = Question();
@@ -175,6 +173,10 @@ class CounterScreen extends State<CounterScreenState> {
                               question: mainQuestion['query'],
                               user: mainQuestion['username'],
                               questionId: mainQuestion.id,
+                              date: DateFormat('MM/dd/yyyy')
+                                  .format(mainQuestion['created'].toDate()!)
+                                  .toString(),
+                              currentUser: widget.currentUser,
                             );
                           },
                         );
@@ -197,6 +199,7 @@ class CounterScreen extends State<CounterScreenState> {
                   icon: Icon(Icons.send),
                   tooltip: 'post',
                   onPressed: () {
+                    getUserName();
                     Postquestion();
                     // DatabaseManager().getUsersList();
                   },
@@ -211,7 +214,7 @@ class CounterScreen extends State<CounterScreenState> {
 
   void Postquestion() async {
     _question.query = _questionController.text;
-    _question.username = getUserName();
+    _question.username = widget.currentUser;
     _question.created = DateTime.now();
     if (_questionController.text.isNotEmpty) {
       await FirebaseFirestore.instance

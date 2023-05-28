@@ -16,7 +16,7 @@ class CommentPost extends StatefulWidget {
   final List<String> likes;
   final List<String> dislikes;
   final String comment_id;
-  // final Timestamp time;
+  final String date;
 
   const CommentPost({
     super.key,
@@ -27,6 +27,7 @@ class CommentPost extends StatefulWidget {
     required this.answer_id,
     required this.Question_id,
     required this.comment_id,
+    required this.date,
   });
 
   @override
@@ -123,17 +124,27 @@ class _CommentPostState extends State<CommentPost> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  //username of the person who commented
                   Text(
                     widget.user,
                     style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
                         color: const Color.fromARGB(255, 123, 164, 197)),
                   ),
                   const SizedBox(
                     height: 10,
                   ),
-                  Text(widget.comment),
+                  //comment
+                  Text(
+                    widget.comment,
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black),
+                  ),
                   const SizedBox(
-                    height: 10,
+                    height: 15,
                   ),
                   //buttons
                   Row(
@@ -141,22 +152,32 @@ class _CommentPostState extends State<CommentPost> {
                       //Like button
                       LikeButton(isLiked: isLiked, onTap: toggleLike),
                       const SizedBox(
-                        width: 5,
+                        width: 7,
                       ),
                       //Like Count
                       Text(widget.likes.length.toString()),
                       const SizedBox(
                         width: 15,
                       ),
+                      //dislike button
                       DislikeButton(
                           isDisliked: isDisliked, onTap: toggleDisLike),
                       const SizedBox(
-                        width: 5,
+                        width: 7,
                       ),
+                      //dislike count
                       Text(widget.dislikes.length.toString()),
                       const SizedBox(
-                        width: 30,
+                        width: 120,
                       ),
+                      //date
+                      Text(widget.date,
+                          style: TextStyle(
+                            fontStyle: FontStyle.italic,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.blueGrey,
+                          ))
                     ],
                   ),
                 ],

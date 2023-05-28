@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 class CommentButton extends StatelessWidget {
   void Function()? onTap;
+  final String username;
 
-  CommentButton({super.key, required this.onTap});
+  CommentButton({super.key, required this.onTap, required this.username});
 
   @override
   Widget build(BuildContext context) {

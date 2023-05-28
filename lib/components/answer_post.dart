@@ -15,8 +15,8 @@ class AnswerPost extends StatefulWidget {
   final String question_id;
   final List<String> likes;
   final List<String> dislikes;
-  // final Timestamp time;
-
+  final String date;
+  final String CurrentUser;
   const AnswerPost({
     super.key,
     required this.answer,
@@ -25,6 +25,8 @@ class AnswerPost extends StatefulWidget {
     required this.likes,
     required this.dislikes,
     required this.question_id,
+    required this.date,
+    required this.CurrentUser,
   });
 
   @override
@@ -117,17 +119,27 @@ class _AnswerPostState extends State<AnswerPost> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  //username for a person who asnwers a question
                   Text(
                     widget.user,
                     style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
                         color: const Color.fromARGB(255, 123, 164, 197)),
                   ),
                   const SizedBox(
                     height: 10,
                   ),
-                  Text(widget.answer),
+                  //answer
+                  Text(
+                    widget.answer,
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black),
+                  ),
                   const SizedBox(
-                    height: 10,
+                    height: 15,
                   ),
                   //buttons
                   Row(
@@ -152,15 +164,33 @@ class _AnswerPostState extends State<AnswerPost> {
                         width: 30,
                       ),
                       //comment button
-                      CommentButton(onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (context) => Comments(
-                                    Answer_id: widget.answerId,
-                                    Question_Id: widget.question_id,
-                                  )),
-                        );
-                      }),
+                      CommentButton(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) => Comments(
+                                      Answer_id: widget.answerId,
+                                      Question_Id: widget.question_id,
+                                      username: widget.CurrentUser,
+                                    )),
+                          );
+                        },
+                        username: widget.CurrentUser,
+                      ),
+
+                      const SizedBox(
+                        width: 80,
+                      ),
+                      //Date
+
+                      Text(
+                        widget.date,
+                        style: TextStyle(
+                            fontStyle: FontStyle.italic,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.blueGrey),
+                      )
                     ],
                   ),
                 ],

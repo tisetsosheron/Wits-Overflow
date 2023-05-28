@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wits_overflow/Pages/MainQuestions.dart';
@@ -12,10 +13,28 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   final user = FirebaseAuth.instance.currentUser!;
 
-  void answer() {
+  void answer(String username) {
     Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => CounterScreenState(),
+      builder: (context) => CounterScreenState(currentUser: username),
     ));
+  }
+
+  Future getUserName() async {
+    final user = FirebaseAuth.instance.currentUser;
+    String username = "";
+    if (user != null) {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .get()
+          .then((ds) {
+        username = ds['username'];
+      }).catchError((e) {
+        print(e);
+      });
+    }
+    print(username);
+    answer(username);
   }
 
   void toprofile() {
@@ -125,7 +144,7 @@ class _DashboardState extends State<Dashboard> {
                                 child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: GestureDetector(
-                                onTap: answer,
+                                onTap: getUserName,
                                 child: Column(
                                   children: [
                                     Image.asset("images/list.png", width: 64.0),
