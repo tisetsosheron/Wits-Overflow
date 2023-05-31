@@ -16,7 +16,7 @@ class Answers {
         'dislikes': dislikes
       };
 
-  // Constructor to create an Answers object from a snapshot (presumably from a database query)
+  // Constructor to create an Answers object from a snapshot 
   Answers.fromSnapshot(snapshot)
       : answer = snapshot.data()['answer'],                // Retrieves the 'answer' field value from the snapshot
         username = snapshot.data()['username'],            // Retrieves the 'username' field value from the snapshot
