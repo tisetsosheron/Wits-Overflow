@@ -49,7 +49,7 @@ class _ModeratorHomeState extends State<ModeratorHome> {
 
     answer(username);
   }
-
+// Retrieves the count of documents (questions) from the Firestore collection
   Future<int> countDocuments() async {
     CollectionReference collectionRef =
         FirebaseFirestore.instance.collection('mainquestions');
