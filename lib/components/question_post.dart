@@ -4,29 +4,30 @@ import 'package:wits_overflow/Pages/register.dart';
 import 'package:wits_overflow/PostAnswers/post_answers.dart';
 
 class QuestionPost extends StatelessWidget {
-  final String question;
-  final String user;
-  final String currentUser;
-  final String questionId;
-  final String date;
+  final String question;       // Represents the question text
+  final String user;          // Represents the username of the user who asked the question
+  final String currentUser;   // Represents the username of the current user
+  final String questionId;    // Represents the ID of the question
+  final String date;         // Represents the date of the question post
 
-  const QuestionPost(
-      {super.key,
-      required this.question,
-      required this.user,
-      required this.questionId,
-      required this.date,
-      required this.currentUser});
+  const QuestionPost({
+    super.key,
+    required this.question,
+    required this.user,
+    required this.questionId,
+    required this.date,
+    required this.currentUser,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (user != currentUser) {
+        if (user != currentUser) {   // Check if the current user is not the same as the user who asked the question
           Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => Answers(
-              questionId: questionId,
-              username: currentUser,
+              questionId: questionId,    // Passes the question ID to the Answers page
+              username: currentUser,    // Passes the current user's username to the Answers page
             ),
           ));
         }
@@ -58,7 +59,7 @@ class QuestionPost extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  //user that asked a question
+                  // Username of the user who asked the question
                   Text(
                     user,
                     style: TextStyle(
@@ -69,7 +70,7 @@ class QuestionPost extends StatelessWidget {
                   const SizedBox(
                     height: 10,
                   ),
-                  //question
+                  // The question itself
                   Text(
                     question,
                     style: TextStyle(
@@ -80,8 +81,7 @@ class QuestionPost extends StatelessWidget {
                   const SizedBox(
                     height: 10,
                   ),
-                  //Date
-
+                  // Date of the question post
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
