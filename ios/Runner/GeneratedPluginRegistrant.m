@@ -30,10 +30,10 @@
 @import firebase_storage;
 #endif
 
-#if __has_include(<flutter_image_compress/ImageCompressPlugin.h>)
-#import <flutter_image_compress/ImageCompressPlugin.h>
+#if __has_include(<flutter_image_compress_common/ImageCompressPlugin.h>)
+#import <flutter_image_compress_common/ImageCompressPlugin.h>
 #else
-@import flutter_image_compress;
+@import flutter_image_compress_common;
 #endif
 
 #if __has_include(<fluttertoast/FluttertoastPlugin.h>)
