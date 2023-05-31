@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:wits_overflow/Pages/MderatorPage.dart';
 import 'package:wits_overflow/Pages/homepage.dart';
 import 'package:wits_overflow/Pages/register.dart';
 
@@ -34,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
             context,
             MaterialPageRoute(
               builder: (context) =>
-                  const ResetPassword(), // will change this when we have the moderator homepage
+                  ModeratorHome(), // will change this when we have the moderator homepage
             ),
           );
         } else {
