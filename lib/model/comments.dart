@@ -16,7 +16,7 @@ class Comments {
         'dislikes': dislikes
       };
 
-  // Constructor to create a Comments object from a snapshot (presumably from a database query)
+  // Constructor to create a Comments object from a snapshot 
   Comments.fromSnapshot(snapshot)
       : comment = snapshot.data()['comment'],                // Retrieves the 'comment' field value from the snapshot
         username = snapshot.data()['username'],              // Retrieves the 'username' field value from the snapshot
