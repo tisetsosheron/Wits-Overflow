@@ -14,7 +14,7 @@ class Question {
         'created': created
       };
 
-  // Constructor to create a Question object from a snapshot (presumably from a database query)
+  // Constructor to create a Question object from a snapshot 
   Question.fromSnapshot(snapshot)
       : query = snapshot.data()['query'],              // Retrieves the 'query' field value from the snapshot
         answer = snapshot.data()['answer'],            // Retrieves the 'answer' field value from the snapshot
